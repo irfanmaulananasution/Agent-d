@@ -36,11 +36,9 @@ public class AgentDApplication extends SpringBootServletInitializer {
     public void handleTextEvent(MessageEvent<TextMessageContent> messageEvent){
         String pesan = messageEvent.getMessage().getText().toLowerCase();
         String[] pesanSplit = pesan.split(" ");
-        if(pesanSplit[0].equals("apakah")){
-            String jawaban = getRandomJawaban();
-            String replyToken = messageEvent.getReplyToken();
-            balasChatDenganRandomJawaban(replyToken, jawaban);
-        }
+        String jawaban = "Halo, Agent-D sedang dalam pengembangan, tunggu kami ya!";
+        String replyToken = messageEvent.getReplyToken();
+        balasChatDenganRandomJawaban(replyToken, jawaban);
     }
 
     private String getRandomJawaban(){
