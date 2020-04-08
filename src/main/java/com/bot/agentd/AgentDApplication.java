@@ -2,6 +2,7 @@ package com.bot.agentd;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.event.FollowEvent;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
@@ -22,6 +24,8 @@ public class AgentDApplication extends SpringBootServletInitializer {
 
     @Autowired
     private LineMessagingClient lineMessagingClient;
+
+    static HashMap<String, UserAgentD> repo = new HashMap<String, UserAgentD>();
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
@@ -36,23 +40,31 @@ public class AgentDApplication extends SpringBootServletInitializer {
     public void handleTextEvent(MessageEvent<TextMessageContent> messageEvent){
         String pesan = messageEvent.getMessage().getText().toLowerCase();
         String[] pesanSplit = pesan.split(" ");
-        String jawaban = "Halo, Agent-D sedang dalam pengembangan, tunggu kami ya!";
-        String replyToken = messageEvent.getReplyToken();
-        balasChatDenganRandomJawaban(replyToken, jawaban);
-    }
-
-    private String getRandomJawaban(){
-        String jawaban = "";
-        int random = new Random().nextInt();
-        if(random%2==0){
-            jawaban = "Ya";
-        } else{
-            jawaban = "Nggak";
+        String userId = messageEvent.getSource().getSenderId();
+        if(repo.get(userId)==null){
+            repo.put(userId,new UserAgentD(userId));
         }
-        return jawaban;
+        String jawaban = "";
+        switch (pesanSplit[0]){
+            case("lihat"):
+                jawaban = "soon to implemented";
+                break;
+            default:
+                jawaban = "Agent-D Dalam Pengembangan!";
+        }
+        String replyToken = messageEvent.getReplyToken();
+        replyText(replyToken, jawaban);
     }
 
-    private void balasChatDenganRandomJawaban(String replyToken, String jawaban){
+    @EventMapping
+    public void handleFollowEvent(FollowEvent event) {
+        String replyToken = event.getReplyToken();
+        UserAgentD user = new UserAgentD(event.getSource().getSenderId());
+        repo.put(event.getSource().getSenderId(),user);
+    }
+
+
+    private void replyText(String replyToken, String jawaban){
         TextMessage jawabanDalamBentukTextMessage = new TextMessage(jawaban);
         try {
             lineMessagingClient
