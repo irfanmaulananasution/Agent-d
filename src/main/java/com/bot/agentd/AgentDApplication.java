@@ -46,7 +46,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
         }
         String jawaban = "";
         switch (pesanSplit[0]){
-            case("lihat"):
+            case("tambah"):
                 jawaban = "soon to implemented";
                 break;
             default:
