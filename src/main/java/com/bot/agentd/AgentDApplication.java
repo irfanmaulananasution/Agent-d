@@ -8,12 +8,14 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -38,16 +40,31 @@ public class AgentDApplication extends SpringBootServletInitializer {
 
     @EventMapping
     public void handleTextEvent(MessageEvent<TextMessageContent> messageEvent){
-        String pesan = messageEvent.getMessage().getText().toLowerCase();
-        String[] pesanSplit = pesan.split(" ");
+        String pesan = messageEvent.getMessage().getText();
+        String[] pesanSplit = pesan.split("-");
         String userId = messageEvent.getSource().getSenderId();
         if(repo.get(userId)==null){
             repo.put(userId,new UserAgentD(userId));
         }
+        UserAgentD user = repo.get(userId);
         String jawaban = "";
-        switch (pesanSplit[0]){
+        switch (pesanSplit[0].toLowerCase()){
             case("tambah"):
-                jawaban = "soon to implemented";
+                switch (pesanSplit[1].toLowerCase()){
+                    case("tugasindividu"):
+                        //pesan : Tambah-TugasIndividu-tugas kelompok adpro-9/4/2020
+                        String namaTugas = pesanSplit[2];
+                        String[] date = pesanSplit[3].split("/");
+                        int tanggal = Integer.parseInt(date[0]);
+                        int bulan = Integer.parseInt(date[1]);
+                        int tahun = Integer.parseInt(date[2]);
+                        Date deadline = new Date(tahun,bulan,tanggal);
+                        user.listTugasIndividu.add(new TugasIndividu(namaTugas,deadline));
+                        jawaban = namaTugas+" telah ditambahkan dalam list tugas individu";
+                        break;
+                    default:
+                        jawaban = "maaf command tidak diketahui";
+                }
                 break;
             default:
                 jawaban = "Agent-D Dalam Pengembangan!";
