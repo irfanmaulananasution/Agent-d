@@ -65,6 +65,14 @@ public class AgentDApplication extends SpringBootServletInitializer {
                         jawaban = "command tidak diketahui";
                         break;
                 }
+            case("cek") :
+                switch(pesanSplit[1].toLowerCase()){
+                    case("jadwal"):
+                        for (int i = 0; i < user.listJadwal.size(); i++){
+                            Jadwal jadwal = new (listJadwal.get(i));
+                            jawaban += jadwal.getName() + " " + jadwal.getDate() + "\n";
+                        }
+                }
             default:
                 jawaban = "Agent-D Dalam Pengembangan!";
         }
