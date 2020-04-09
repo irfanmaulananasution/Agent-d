@@ -69,8 +69,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
                 switch(pesanSplit[1].toLowerCase()){
                     case("jadwal"):
                         for (int i = 0; i < user.listJadwal.size(); i++){
-                            Jadwal jadwal = new (listJadwal.get(i));
-                            jawaban += jadwal.getName() + " " + jadwal.getDate() + "\n";
+                            jawaban += listJadwal.get(i).getName() + " " + listJadwal.get(i).getDate() + "\n";
                         }
                 }
             default:
