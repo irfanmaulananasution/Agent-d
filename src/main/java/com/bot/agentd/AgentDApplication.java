@@ -45,10 +45,26 @@ public class AgentDApplication extends SpringBootServletInitializer {
             repo.put(userId,new UserAgentD(userId));
         }
         String jawaban = "";
-        switch (pesanSplit[0]){
+        switch (pesanSplit[0].toLowerCase()){
             case("tambah"):
-                jawaban = "soon to implemented";
-                break;
+                switch(pesanSplit[1].toLowerCase()){
+                    case("jadwal"):
+                        String namaKegiatan = pesanSplit[2];
+                        String[] date = pesanSplit[3].split ("/");
+                        int tanggal = Integer.parseInt(date[0]);
+                        int bulan = Integer.parseInt(date[1]);
+                        int tahun = Integer.parseInt(date[2]);
+                        String[] time = pesanSplit[4].split (":");
+                        int jam = Integer.parseInt(time[0]);
+                        int menit = Integer.parseInt(time[1]);
+                        int detik = Integer.parseInt(time[2]);
+                        Date waktuKegiatan = new Date (tahun, bulan, tanggal, jam, menit, detik);
+                        user.listJadwal.add(new Jadwal (namaKegiatan, waktuKegiatan));
+                        jawaban = namaKegiatan + " telah ditambahkan dalam jadwal";
+                    default:
+                        jawaban = "command tidak diketahui";
+                        break;
+                }
             default:
                 jawaban = "Agent-D Dalam Pengembangan!";
         }

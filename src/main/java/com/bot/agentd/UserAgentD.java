@@ -5,6 +5,7 @@ public class UserAgentD {
 
     UserAgentD(String userID){
         id = userID;
+        this.listJadwal<Jadwal> = new ArrayList<Jadwal>();
     }
 
 }
