@@ -14,9 +14,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+
 
 @SpringBootApplication
 @LineMessageHandler
@@ -69,7 +71,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
                 switch(pesanSplit[1].toLowerCase()){
                     case("jadwal"):
                         for (int i = 0; i < user.listJadwal.size(); i++){
-                            jawaban += listJadwal.get(i).getName() + " " + listJadwal.get(i).getDate() + "\n";
+                            jawaban += user.listJadwal.get(i).getName() + " " + user.listJadwal.get(i).getDate() + "\n";
                         }
                 }
             default:
