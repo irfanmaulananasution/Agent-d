@@ -15,4 +15,8 @@ public class UserAgentD {
         listTugasIndividu.add(task);
     }
 
+    ArrayList<TugasIndividu> getTugasIndividu(){
+        return this.listTugasIndividu;
+    }
+
 }

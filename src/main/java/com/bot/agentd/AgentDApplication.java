@@ -106,9 +106,9 @@ public class AgentDApplication extends SpringBootServletInitializer {
         String jawaban = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         for(int i = 0;i<user.listTugasIndividu.size();i++){
-            jawaban+="nama tugas : "+user.listTugasIndividu.get(i).getName()+"\n";
-            jawaban+="deskripsi : "+user.listTugasIndividu.get(i).getDesc()+"\n";
-            jawaban+="deadline : "+dateFormat.format(user.listTugasIndividu.get(i).getDeadline())+"\n\n";
+            jawaban+="nama tugas : "+user.getTugasIndividu().get(i).getName()+"\n";
+            jawaban+="deskripsi : "+user.getTugasIndividu().get(i).getDesc()+"\n";
+            jawaban+="deadline : "+dateFormat.format(user.getTugasIndividu().get(i).getDeadline())+"\n\n";
         }
         return jawaban;
     }
