@@ -11,4 +11,8 @@ public class UserAgentD {
         this.listTugasIndividu = new ArrayList<TugasIndividu>();
     }
 
+    void addTugasIndividu(TugasIndividu task){
+        listTugasIndividu.add(task);
+    }
+
 }

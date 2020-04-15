@@ -4,10 +4,12 @@ import java.util.Date;
 
 public class TugasIndividu implements Tugas {
     String name;
+    String desc;
     Date deadline;
 
-    TugasIndividu(String name, Date deadline){
+    TugasIndividu(String name,String desc, Date deadline){
         this.name = name;
+        this.desc = desc;
         this.deadline = deadline;
     }
 
@@ -18,6 +20,10 @@ public class TugasIndividu implements Tugas {
     public void setName(String name){
         this.name = name;
     }
+
+    public String getDesc(){ return this.desc;}
+
+    public void setDesc(String desc){ this.desc = desc;}
 
     public Date getDeadline(){
         return this.deadline;
