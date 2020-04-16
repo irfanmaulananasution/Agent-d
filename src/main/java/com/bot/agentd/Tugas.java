@@ -4,7 +4,9 @@ import java.util.Date;
 
 public interface Tugas {
     String getName();
-    public void setName(String name);
+    void setName(String name);
+    String getDesc();
+    void setDesc(String desc);
     Date getDeadline();
     void setDeadline(Date date);
 
