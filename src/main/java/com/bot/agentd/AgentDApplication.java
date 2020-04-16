@@ -63,9 +63,9 @@ public class AgentDApplication extends SpringBootServletInitializer {
 
     private String periksaMessage(String[] pesanSplit, UserAgentD user){
         String jawaban = "";
-        switch (pesanSplit[0]){
+        switch (pesanSplit[0].toLowerCase()){
             case("tambah"):
-                switch (pesanSplit[1]){
+                switch (pesanSplit[1].toLowerCase()){
                     case("tugas individu"):
                         jawaban = tambahTugasIndividu(pesanSplit[2], pesanSplit[3], pesanSplit[4], user);
                         break;
@@ -74,7 +74,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
                 }
                 break;
             case("lihat"):
-                switch (pesanSplit[1]){
+                switch (pesanSplit[1].toLowerCase()){
                     case ("tugas individu"):
                         jawaban = lihatTugasIndividu(user);
                         break;
