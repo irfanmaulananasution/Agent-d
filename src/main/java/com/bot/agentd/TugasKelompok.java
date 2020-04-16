@@ -18,10 +18,23 @@ public class TugasKelompok implements Tugas {
 
     public void addAnggota(UserAgentD anggota){
         // add user lain kedalam tugas kelompok
+        if(isAnggotaExist(anggota))
+            this.anggota.add(anggota);
     }
 
     public void removeAnggota(UserAgentD anggota){
         // remove sebuah anggota dari tugas kelompok
+        if(isAnggotaExist(anggota)){
+            this.anggota.remove(anggota);
+        }
+    }
+
+    private boolean isAnggotaExist(UserAgentD anggota){
+        for (int i=0; i<this.anggota.size();i++){
+            if(this.anggota.get(i).equals(anggota))
+                return true;
+        }
+        return false;
     }
 
 
