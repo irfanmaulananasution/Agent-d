@@ -8,14 +8,17 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 @SpringBootApplication
@@ -38,20 +41,15 @@ public class AgentDApplication extends SpringBootServletInitializer {
 
     @EventMapping
     public void handleTextEvent(MessageEvent<TextMessageContent> messageEvent){
-        String pesan = messageEvent.getMessage().getText().toLowerCase();
-        String[] pesanSplit = pesan.split(" ");
+        String pesan = messageEvent.getMessage().getText();
+        String[] pesanSplit = pesan.split("-");
         String userId = messageEvent.getSource().getSenderId();
         if(repo.get(userId)==null){
             repo.put(userId,new UserAgentD(userId));
         }
-        String jawaban = "";
-        switch (pesanSplit[0]){
-            case("tambah"):
-                jawaban = "soon to implemented";
-                break;
-            default:
-                jawaban = "Agent-D Dalam Pengembangan!";
-        }
+        UserAgentD user = repo.get(userId);
+        String jawaban = periksaMessage(pesanSplit, user);
+
         String replyToken = messageEvent.getReplyToken();
         replyText(replyToken, jawaban);
     }
@@ -61,6 +59,58 @@ public class AgentDApplication extends SpringBootServletInitializer {
         String replyToken = event.getReplyToken();
         UserAgentD user = new UserAgentD(event.getSource().getSenderId());
         repo.put(event.getSource().getSenderId(),user);
+    }
+
+    private String periksaMessage(String[] pesanSplit, UserAgentD user){
+        String jawaban = "";
+        switch (pesanSplit[0]){
+            case("tambah"):
+                switch (pesanSplit[1]){
+                    case("tugas individu"):
+                        jawaban = tambahTugasIndividu(pesanSplit[2], pesanSplit[3], pesanSplit[4], user);
+                        break;
+                    default:
+                        jawaban = "command tidak dikenal";
+                }
+                break;
+            case("lihat"):
+                switch (pesanSplit[1]){
+                    case ("tugas individu"):
+                        jawaban = lihatTugasIndividu(user);
+                        break;
+                    default:
+                        jawaban = "command tidak dikenal";
+                }
+                break;
+            default:
+                jawaban = "command tidak dikenal";
+        }
+
+        return jawaban;
+    }
+
+    private String tambahTugasIndividu(String nama, String deskripsi, String deadline, UserAgentD user) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date tanggal = dateFormat.parse(deadline);
+            TugasIndividu tugas = new TugasIndividu(nama, deskripsi, tanggal);
+            user.addTugasIndividu(tugas);
+            return nama + " berhasil ditambahkan sebagai tugas individu";
+        }catch (ParseException e){
+            e.printStackTrace();
+            return "Tanggal tidak dikenal";
+        }
+    }
+
+    private String lihatTugasIndividu(UserAgentD user){
+        String jawaban = "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        for(int i = 0;i<user.listTugasIndividu.size();i++){
+            jawaban+="nama tugas : "+user.getTugasIndividu().get(i).getName()+"\n";
+            jawaban+="deskripsi : "+user.getTugasIndividu().get(i).getDesc()+"\n";
+            jawaban+="deadline : "+dateFormat.format(user.getTugasIndividu().get(i).getDeadline())+"\n\n";
+        }
+        return jawaban;
     }
 
 
