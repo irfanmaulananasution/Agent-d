@@ -45,6 +45,9 @@ test:
       - .gradle
   rules:
     - if: '$CI_PROJECT_NAMESPACE != "agent-d/"'
+  artifacts:
+    paths:
+      - coverage/
 
 Deployment:
   image: ruby:2.4
