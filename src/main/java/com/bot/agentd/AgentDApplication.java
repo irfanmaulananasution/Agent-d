@@ -8,7 +8,6 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 @SpringBootApplication
 @LineMessageHandler
@@ -28,7 +30,10 @@ public class AgentDApplication extends SpringBootServletInitializer {
     @Autowired
     private LineMessagingClient lineMessagingClient;
 
-    static HashMap<String, UserAgentD> repo = new HashMap<String, UserAgentD>();
+    static HashMap<String, UserAgentD> repo = new HashMap<>();
+    String tidakDikenal = "Command tidak dikenal";
+    LogManager lgmngr = LogManager.getLogManager();
+    Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
@@ -56,7 +61,6 @@ public class AgentDApplication extends SpringBootServletInitializer {
 
     @EventMapping
     public void handleFollowEvent(FollowEvent event) {
-        String replyToken = event.getReplyToken();
         UserAgentD user = new UserAgentD(event.getSource().getSenderId());
         repo.put(event.getSource().getSenderId(),user);
     }
@@ -70,7 +74,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
                         jawaban = tambahTugasIndividu(pesanSplit[2], pesanSplit[3], pesanSplit[4], user);
                         break;
                     default:
-                        jawaban = "command tidak dikenal";
+                        jawaban = tidakDikenal;
                 }
                 break;
             case("lihat"):
@@ -79,11 +83,11 @@ public class AgentDApplication extends SpringBootServletInitializer {
                         jawaban = lihatTugasIndividu(user);
                         break;
                     default:
-                        jawaban = "command tidak dikenal";
+                        jawaban = tidakDikenal;
                 }
                 break;
             default:
-                jawaban = "command tidak dikenal";
+                jawaban = tidakDikenal;
         }
 
         return jawaban;
@@ -97,7 +101,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
             user.addTugasIndividu(tugas);
             return nama + " berhasil ditambahkan sebagai tugas individu";
         }catch (ParseException e){
-            e.printStackTrace();
+            log.log(Level.INFO, "Error while parsing the date");
             return "Tanggal tidak dikenal";
         }
     }
@@ -121,7 +125,8 @@ public class AgentDApplication extends SpringBootServletInitializer {
                     .replyMessage(new ReplyMessage(replyToken, jawabanDalamBentukTextMessage))
                     .get();
         } catch (InterruptedException | ExecutionException e) {
-            System.out.println("Ada error saat ingin membalas chat");
+            log.log(Level.INFO, "Error while sending message");
+            Thread.currentThread().interrupt();
         }
     }
 

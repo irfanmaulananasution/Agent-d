@@ -8,7 +8,7 @@ public class UserAgentD {
 
     UserAgentD(String userID){
         id = userID;
-        this.listTugasIndividu = new ArrayList<TugasIndividu>();
+        this.listTugasIndividu = new ArrayList<>();
     }
 
     void addTugasIndividu(TugasIndividu task){
