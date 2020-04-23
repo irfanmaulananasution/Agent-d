@@ -5,38 +5,44 @@ import java.util.Date;
 
 public class TugasKelompok implements Tugas {
     String name;
+    String desc;
     Date deadline;
     UserAgentD owner;
     ArrayList<UserAgentD> anggota;
 
-    TugasKelompok(String name, Date deadline, UserAgentD owner){
+    TugasKelompok(String name,String desc, Date deadline, UserAgentD owner){
         this.name = name;
+        this.desc = desc;
         this.deadline = deadline;
         this.owner = owner;
-        this.anggota = new ArrayList<UserAgentD>();
+        this.anggota = new ArrayList<>();
     }
 
     public void addAnggota(UserAgentD anggota){
-        // add user lain kedalam tugas kelompok
-        if(isAnggotaExist(anggota))
+        if(isAnggotaExist(anggota)==false) {
             this.anggota.add(anggota);
+            anggota.addTugasKelompok(this);
+        }
     }
 
     public void removeAnggota(UserAgentD anggota){
-        // remove sebuah anggota dari tugas kelompok
         if(isAnggotaExist(anggota)){
             this.anggota.remove(anggota);
+            anggota.removeTugasKelompok(this);
         }
     }
 
     private boolean isAnggotaExist(UserAgentD anggota){
-        for (int i=0; i<this.anggota.size();i++){
-            if(this.anggota.get(i).equals(anggota))
-                return true;
-        }
+        if(this.anggota.contains(anggota))
+            return true;
         return false;
     }
 
+    public void remindDeadline(){
+        for(UserAgentD ang : anggota){
+            ang.remindTugasKelompok(this);
+        }
+    }
 
     @Override
     public String getName() {
@@ -49,6 +55,16 @@ public class TugasKelompok implements Tugas {
     }
 
     @Override
+    public String getDesc() {
+        return desc;
+    }
+
+    @Override
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    @Override
     public Date getDeadline() {
         return deadline;
     }
@@ -56,5 +72,13 @@ public class TugasKelompok implements Tugas {
     @Override
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
+    }
+
+    public UserAgentD getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserAgentD owner) {
+        this.owner = owner;
     }
 }
