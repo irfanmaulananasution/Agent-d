@@ -2,11 +2,35 @@ plugins {
     id 'org.springframework.boot' version '2.2.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
+    id 'jacoco'
 }
+
+apply plugin: 'jacoco'
 
 group = 'com.bot'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+
+jacoco {
+    toolVersion = "0.8.5"
+}
+
+jacocoTestReport {
+    reports {
+        html.enabled true
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+test.finalizedBy jacocoTestReport
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
 
 repositories {
     mavenCentral()
