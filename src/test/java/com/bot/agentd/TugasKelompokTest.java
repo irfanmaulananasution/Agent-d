@@ -70,6 +70,7 @@ public class TugasKelompokTest {
     @Test
     public void testMethodSetOwner() {
         UserAgentD owner2 = new UserAgentD("2");
+        tugasKelompok.setOwner(owner2);
         assertEquals(owner2,tugasKelompok.getOwner());
     }
 
