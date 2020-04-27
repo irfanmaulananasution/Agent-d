@@ -9,4 +9,5 @@ public interface Tugas {
     void setDesc(String desc);
     Date getDeadline();
     void setDeadline(Date date);
+
 }
