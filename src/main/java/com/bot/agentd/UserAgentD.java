@@ -4,10 +4,18 @@ import java.util.ArrayList;
 
 public class UserAgentD {
     String id;
-    ArrayList<Jadwal> listJadwal;
+    ArrayList<TugasIndividu> listTugasIndividu;
 
     UserAgentD(String userID){
         id = userID;
-        this.listJadwal<Jadwal> = new ArrayList<Jadwal>();
+        this.listTugasIndividu = new ArrayList<>();
+    }
+
+    void addTugasIndividu(TugasIndividu task){
+        listTugasIndividu.add(task);
+    }
+
+    ArrayList<TugasIndividu> getTugasIndividu(){
+        return this.listTugasIndividu;
     }
 }
