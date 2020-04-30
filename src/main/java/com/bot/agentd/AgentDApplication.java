@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 
 
 @SpringBootApplication
@@ -75,7 +76,11 @@ public class AgentDApplication extends SpringBootServletInitializer {
                         jawaban = tambahTugasIndividu(pesanSplit[2], pesanSplit[3], pesanSplit[4], user);
                         break;
                     case ("jadwal"):
-                        jawaban = tambahJadwal(pesanSplit[2], pesanSplit[3], pesanSplit[4], pesanSplit[5], pesanSplit[6], user);
+                        String name = pesanSplit[2];
+                        String date = pesanSplit[3];
+                        String startTime = pesanSplit[4];
+                        String endTime = pesanSplit[5];
+                        jawaban = tambahJadwal(name, date, startTime, endTime, user);
                         break;
                     default:
                         jawaban = tidakDikenal;
@@ -123,18 +128,37 @@ public class AgentDApplication extends SpringBootServletInitializer {
         }
         return jawaban;
     }
-    private String tambahJadwal (String namaKegiatan, String waktu, UserAgentD user){
+
+    private String tambahJadwal (String name, String date, String timeStart, String timeEnd, UserAgentD user){
         try{
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Date waktuKegiatanAwal = dateFormat.parse(waktu);
-            Jadwal jadwal = new Jadwal(namaKegiatan, waktuKegiatanAwal);
-            user.listJadwal.add(jadwal);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat timeFormat = new SimpleDateFormat( "HH:mm:ss");
+            Date dateStart = dateFormat.parse(date);
+            Date timeStartDate = timeFormat.parse(timeStart);
+            Date timeEndDate = timeFormat.parse(timeEnd);
+            Jadwal jadwal = new Jadwal(name, dateStart, timeStartDate, timeEndDate);
+            user.addJadwal(jadwal);
+            return (name + "berhasil ditambahkan dalam jadwal");
+        }catch (ParseException e){
+            log.log(Level.INFO, "Error while parsing the date");
+            return "Tanggal tidak dikenal";
         }
     }
     private String lihatJadwal(UserAgentD user){
         String jawaban = "";
-        for (int i = 0; i < user.listJadwal.size(); i++){
-            jawaban += user.listJadwal.get(i).getName() + " " + user.listJadwal.get(i).getDate() + "\n";
+        ArrayList<Jadwal> listJadwal = user.getListJadwal();
+        for (int i = 0; i < listJadwal.size(); i++){
+            Jadwal jadwalSekarang = listJadwal.get(i);
+            String name = jadwalSekarang.getName();
+            Date date = jadwalSekarang.getDate();
+            Date timeStart = jadwalSekarang.getTimeStart();
+            Date timeEnd = jadwalSekarang.getTimeEnd();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            String strDate = dateFormat.format(date);
+            String strTimeStart = timeFormat.format(timeStart);
+            String strTimeEnd = timeFormat.format(timeEnd);
+            jawaban += name + " " + strDate + " " + strTimeStart + " - " + strTimeEnd + "\n";
         }
         return jawaban;
     }

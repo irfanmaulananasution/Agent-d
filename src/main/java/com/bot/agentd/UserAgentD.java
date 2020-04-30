@@ -6,11 +6,13 @@ public class UserAgentD {
     String id;
     ArrayList<TugasIndividu> listTugasIndividu;
     ArrayList<TugasKelompok> listTugasKelompok;
+    ArrayList<Jadwal>  listJadwal;
 
     UserAgentD(String userID){
         id = userID;
         this.listTugasIndividu = new ArrayList<>();
         this.listTugasKelompok = new ArrayList<>();
+        this.listJadwal = new ArrayList<>();
     }
 
     void addTugasIndividu(TugasIndividu task){
@@ -33,5 +35,16 @@ public class UserAgentD {
 
     ArrayList<TugasIndividu> getTugasIndividu(){
         return this.listTugasIndividu;
+    }
+
+    void addJadwal(Jadwal jadwal){
+        this.listJadwal.add(jadwal);
+    }
+    void removeJadwal(Jadwal jadwal){
+        this.listJadwal.remove(jadwal);
+    }
+
+    ArrayList<Jadwal> getListJadwal(){
+        return this.listJadwal;
     }
 }
