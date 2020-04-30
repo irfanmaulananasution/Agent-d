@@ -63,7 +63,6 @@ public class JadwalTests {
         assertEquals("15:00:00", strTime);
     }
 
-
 //    @Test
 //    public void testSetDate(){
 //    }

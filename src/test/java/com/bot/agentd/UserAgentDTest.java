@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserAgentDTest {
     UserAgentD user;
-
     @BeforeEach
     public void setUp(){
         user = new UserAgentD("123abc");
