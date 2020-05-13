@@ -24,7 +24,7 @@ public class Jadwal{
     public String getDay(){
         return this.day;
     }
-    public void setDay(Date date){
+    public void setDay(String day){
         this.day = day;
     }
     public Date getTimeStart(){
