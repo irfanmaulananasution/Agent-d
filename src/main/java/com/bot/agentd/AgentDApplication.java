@@ -55,7 +55,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
             repo.put(userId,new UserAgentD(userId));
         }
         UserAgentD user = repo.get(userId);
-        String jawaban = periksaMessage(pesanSplit, user);
+        String jawaban = user.periksaMessage(pesanSplit);
 
         String replyToken = messageEvent.getReplyToken();
         replyText(replyToken, jawaban);
@@ -66,103 +66,6 @@ public class AgentDApplication extends SpringBootServletInitializer {
         UserAgentD user = new UserAgentD(event.getSource().getSenderId());
         repo.put(event.getSource().getSenderId(),user);
     }
-
-    private String periksaMessage(String[] pesanSplit, UserAgentD user){
-        String jawaban = "";
-        switch (pesanSplit[0].toLowerCase()){
-            case("tambah"):
-                switch (pesanSplit[1].toLowerCase()){
-                    case("tugas individu"):
-                        jawaban = tambahTugasIndividu(pesanSplit[2], pesanSplit[3], pesanSplit[4], user);
-                        break;
-                    case ("jadwal"):
-                        String name = pesanSplit[2];
-                        String date = pesanSplit[3];
-                        String startTime = pesanSplit[4];
-                        String endTime = pesanSplit[5];
-                        jawaban = tambahJadwal(name, date, startTime, endTime, user);
-                        break;
-                    default:
-                        jawaban = tidakDikenal;
-                }
-                break;
-            case("lihat"):
-                switch (pesanSplit[1].toLowerCase()){
-                    case ("tugas individu"):
-                        jawaban = lihatTugasIndividu(user);
-                        break;
-                    case ("jadwal"):
-                        jawaban = lihatJadwal(user);
-                        break;
-                    default:
-                        jawaban = tidakDikenal;
-                }
-                break;
-            default:
-                jawaban = tidakDikenal;
-        }
-
-        return jawaban;
-    }
-
-    private String tambahTugasIndividu(String nama, String deskripsi, String deadline, UserAgentD user) {
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date tanggal = dateFormat.parse(deadline);
-            TugasIndividu tugas = new TugasIndividu(nama, deskripsi, tanggal);
-            user.addTugasIndividu(tugas);
-            return nama + " berhasil ditambahkan sebagai tugas individu";
-        }catch (ParseException e){
-            log.log(Level.INFO, "Error while parsing the date");
-            return "Tanggal tidak dikenal";
-        }
-    }
-
-    private String lihatTugasIndividu(UserAgentD user){
-        String jawaban = "";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        for(int i = 0;i<user.listTugasIndividu.size();i++){
-            jawaban+="nama tugas : "+user.getTugasIndividu().get(i).getName()+"\n";
-            jawaban+="deskripsi : "+user.getTugasIndividu().get(i).getDesc()+"\n";
-            jawaban+="deadline : "+dateFormat.format(user.getTugasIndividu().get(i).getDeadline())+"\n\n";
-        }
-        return jawaban;
-    }
-
-    private String tambahJadwal (String name, String date, String timeStart, String timeEnd, UserAgentD user){
-        try{
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat timeFormat = new SimpleDateFormat( "HH:mm:ss");
-            Date dateStart = dateFormat.parse(date);
-            Date timeStartDate = timeFormat.parse(timeStart);
-            Date timeEndDate = timeFormat.parse(timeEnd);
-            Jadwal jadwal = new Jadwal(name, dateStart, timeStartDate, timeEndDate);
-            user.addJadwal(jadwal);
-            return (name + "berhasil ditambahkan dalam jadwal");
-        }catch (ParseException e){
-            log.log(Level.INFO, "Error while parsing the date");
-            return "Tanggal tidak dikenal";
-        }
-    }
-    private String lihatJadwal(UserAgentD user){
-        String jawaban = "";
-        ArrayList<Jadwal> listJadwal = user.getListJadwal();
-        for (int i = 0; i < listJadwal.size(); i++){
-            Jadwal jadwalSekarang = listJadwal.get(i);
-            String name = jadwalSekarang.getName();
-            Date date = jadwalSekarang.getDate();
-            Date timeStart = jadwalSekarang.getTimeStart();
-            Date timeEnd = jadwalSekarang.getTimeEnd();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-            String strDate = dateFormat.format(date);
-            String strTimeStart = timeFormat.format(timeStart);
-            String strTimeEnd = timeFormat.format(timeEnd);
-            jawaban += name + " " + strDate + " " + strTimeStart + " - " + strTimeEnd + "\n";
-        }
-        return jawaban;
-    }
-
 
     private void replyText(String replyToken, String jawaban){
         TextMessage jawabanDalamBentukTextMessage = new TextMessage(jawaban);
@@ -175,5 +78,4 @@ public class AgentDApplication extends SpringBootServletInitializer {
             Thread.currentThread().interrupt();
         }
     }
-
 }

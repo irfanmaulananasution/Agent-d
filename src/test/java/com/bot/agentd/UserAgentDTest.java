@@ -30,7 +30,6 @@ public class UserAgentDTest {
             e.printStackTrace();
         }
     }
-
     @Test
     public void testMethodGetTugasIndividu(){
         try {
@@ -49,36 +48,52 @@ public class UserAgentDTest {
     }
 
     @Test
+    public void testMethodPeriksaMessage1(){
+        String[] command = new String[]{"tambah","tugas individu", "adpro", "tugas individu 1", "02/02/2020"};
+        String jawaban = user.periksaMessage(command);
+        assertEquals("adpro berhasil ditambahkan sebagai tugas individu",jawaban);
+    }
+
+    @Test
+    public void testMethodPeriksaMessage2(){
+        String[] command = new String[]{"tambah","tugas individu", "adpro", "tugas individu 1", "02/02/2020"};
+        String[] command2 = new String[]{"lihat","tugas individu"};
+        user.periksaMessage(command);
+        String jawaban = user.periksaMessage(command2);
+        assertEquals("nama tugas : adpro\ndeskripsi : tugas individu 1\ndeadline : 02/02/2020\n\n",jawaban);
+    }
+
+    @Test
+    public void testMethodPeriksaMessage3(){
+        String[] command = new String[]{"halo"};
+        String jawaban = user.periksaMessage(command);
+        assertEquals("Command Tidak Dikenali",jawaban);
+    }
+
+    @Test
     public void testMethodAddJadwal(){
         try{
             assertEquals(0, user.getTugasIndividu().size());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-            Date date = dateFormat.parse("05/04/2020");
-            Date timeStart = timeFormat.parse("13:00:00");
+            Date timeStart = timeFormat.parse("12:00:00");
             Date timeEnd = timeFormat.parse("14:00:00");
-            Jadwal jadwal1 = new Jadwal ("Jadwal 1", date, timeStart, timeEnd);
+            Jadwal jadwal1 = new Jadwal ("Jadwal 1", "Monday", timeStart, timeEnd);
             user.addJadwal(jadwal1);
-            ArrayList<Jadwal> listJadwal = user.getListJadwal();
-            assertEquals(1, listJadwal.size());
+            assertEquals(1, user.getJadwal().size());
         }catch(ParseException e){
             e.printStackTrace();
         }
     }
-
     @Test
     public void testMethodGetJadwal() {
         try {
             assertEquals(0, user.getTugasIndividu().size());
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-            Date date = dateFormat.parse("05/04/2020");
             Date timeStart = timeFormat.parse("13:00:00");
             Date timeEnd = timeFormat.parse("14:00:00");
-            Jadwal jadwal1 = new Jadwal("Jadwal 1", date, timeStart, timeEnd);
-            user.addJadwal(jadwal1);
-            ArrayList<Jadwal> listJadwal = user.getListJadwal();
-            assertEquals("Jadwal 1", listJadwal.get(0).getName());
+            Jadwal jadwal2 = new Jadwal("Jadwal 2", "Monday", timeStart, timeEnd);
+            user.addJadwal(jadwal2);
+            assertEquals("Jadwal 2", user.getJadwal().get(0).getName());
         } catch (ParseException e) {
             e.printStackTrace();
         }

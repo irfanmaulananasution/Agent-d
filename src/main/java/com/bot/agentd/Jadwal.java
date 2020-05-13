@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class Jadwal{
     String name;
-    Date date;
+    String day;
     Date timeStart;
     Date timeEnd;
 
-    Jadwal(String name, Date date, Date timeStart, Date timeEnd){
+    public Jadwal(String name, String day, Date timeStart, Date timeEnd){
         this.name = name;
-        this.date = date;
+        this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
     }
@@ -18,19 +18,15 @@ public class Jadwal{
     public String getName(){
         return this.name;
     }
-
     public void setName(String name){
         this.name = name;
     }
-
-    public Date getDate(){
-        return this.date;
+    public String getDay(){
+        return this.day;
     }
-
-    public void setDate(Date date){
-        this.date = date;
+    public void setDay(Date date){
+        this.day = day;
     }
-
     public Date getTimeStart(){
         return this.timeStart;
     }
