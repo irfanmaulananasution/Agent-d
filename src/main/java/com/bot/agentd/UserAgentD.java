@@ -28,11 +28,14 @@ public class UserAgentD {
         String namaTugas = tugasKelompok.getName();
         String deadline = tugasKelompok.getDeadline().toString();
         return "Jangan lupa kerjakan tugas "+namaTugas+", dengan deadline "+deadline;
-
     }
+
 
     ArrayList<TugasIndividu> getTugasIndividu(){
         return this.listTugasIndividu;
     }
 
+    ArrayList<TugasKelompok> getTugasKelompok() {
+        return listTugasKelompok;
+    }
 }
