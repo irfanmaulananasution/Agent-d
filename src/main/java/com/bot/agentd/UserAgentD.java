@@ -11,10 +11,6 @@ import java.util.logging.Logger;
 public class UserAgentD {
     String id;
     ArrayList<TugasIndividu> listTugasIndividu;
-    String tidakDikenal = "Command Tidak Dikenali";
-    static LogManager lgmngr = LogManager.getLogManager();
-    static Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
     ArrayList<TugasKelompok> listTugasKelompok;
     ArrayList<Jadwal>  listJadwal;
     String tidakDikenal = "Command Tidak Dikenali";
@@ -115,18 +111,6 @@ public class UserAgentD {
             TugasKelompok tgsKelompok = new TugasKelompok(nama,deskripsi,tanggal,this);
             this.addTugasKelompok(tgsKelompok);
             return nama + " berhasil ditabahkan sebagai tugas kelompok";
-        }catch (ParseException e){
-            log.log(Level.INFO, "Error while parsing the date");
-            return "Tanggal tidak dikenal";
-        }
-    }
-    public String tambahTugasIndividu(String nama, String deskripsi, String deadline) {
-        try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date tanggal = dateFormat.parse(deadline);
-            TugasIndividu tugas = new TugasIndividu(nama, deskripsi, tanggal);
-            this.addTugasIndividu(tugas);
-            return nama + " berhasil ditambahkan sebagai tugas individu";
         }catch (ParseException e){
             log.log(Level.INFO, "Error while parsing the date");
             return "Tanggal tidak dikenal";
