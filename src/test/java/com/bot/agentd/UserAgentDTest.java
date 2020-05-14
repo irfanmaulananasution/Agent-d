@@ -15,7 +15,7 @@ public class UserAgentDTest {
 //    buat test method baru yang dipindahin
     @BeforeEach
     public void setUp(){
-        user = new UserAgentD("123abc");
+        user = new UserAgentD("123abc", "aku");
     }
 
     @Test
@@ -51,14 +51,14 @@ public class UserAgentDTest {
 
     @Test
     public void testMethodPeriksaMessage1(){
-        String[] command = new String[]{"tambah","tugas individu", "adpro", "tugas individu 1", "02/02/2020"};
+        String[] command = new String[]{"tambah","tugas individu", "adpro", "tugas individu 1", "02-02-2020"};
         String jawaban = user.periksaMessage(command);
-        assertEquals("adpro berhasil ditambahkan sebagai tugas individu",jawaban);
+        assertEquals("adpro berhasil ditambahkan sebagai tugas individu kamu, 123abc",jawaban);
     }
 
     @Test
     public void testMethodPeriksaMessage2(){
-        String[] command = new String[]{"tambah","tugas individu", "adpro", "tugas individu 1", "02/02/2020"};
+        String[] command = new String[]{"tambah","tugas individu", "adpro", "tugas individu 1", "02-02-2020"};
         String[] command2 = new String[]{"lihat","tugas individu"};
         user.periksaMessage(command);
         String jawaban = user.periksaMessage(command2);
@@ -74,19 +74,19 @@ public class UserAgentDTest {
 
     @Test
     public void testMethodTambahTugasIndividu1(){
-        String jawaban = user.tambahTugasIndividu("adpro","tugas individu 1","02/02/2020");
-        assertEquals("adpro berhasil ditambahkan sebagai tugas individu",jawaban);
+        String jawaban = user.tambahTugasIndividu("adpro","tugas individu 1","02-02-2020");
+        assertEquals("adpro berhasil ditambahkan sebagai tugas individu kamu, 123abc",jawaban);
     }
 
     @Test
     public void testMethodTambahTugasIndividu2(){
-        String jawaban = user.tambahTugasIndividu("adpro","tugas individu 1","ab/02/2020");
+        String jawaban = user.tambahTugasIndividu("adpro","tugas individu 1","ab-02-2020");
         assertEquals("Tanggal tidak dikenal",jawaban);
     }
 
     @Test
     public void testMethodLihatTugasIndividu(){
-        user.tambahTugasIndividu("adpro","tugas individu 1","02/02/2020");
+        user.tambahTugasIndividu("adpro","tugas individu 1","02-02-2020");
         String jawaban = user.lihatTugasIndividu();
         assertEquals("nama tugas : adpro\ndeskripsi : tugas individu 1\ndeadline : 02/02/2020\n\n",jawaban);
     }
