@@ -43,10 +43,11 @@ public class AgentDApplication extends SpringBootServletInitializer {
     }
 
     @EventMapping
-    public void handleTextEvent(MessageEvent<TextMessageContent> messageEvent){
+    public void handleTextEvent(MessageEvent<TextMessageContent> messageEvent) throws ExecutionException, InterruptedException {
+        String userId = messageEvent.getSource().getUserId();
+        String userName = lineMessagingClient.getProfile(userId).get().getDisplayName();
         String pesan = messageEvent.getMessage().getText();
-        String[] pesanSplit = pesan.split("-");
-        String userId = messageEvent.getSource().getSenderId();
+        String[] pesanSplit = pesan.split("/");
         if(repo.get(userId)==null){
             repo.put(userId,new UserAgentD(userId));
         }

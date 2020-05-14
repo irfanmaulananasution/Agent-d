@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 public class UserAgentD {
     String id;
+    String uName;
     ArrayList<TugasIndividu> listTugasIndividu;
     String tidakDikenal = "Command Tidak Dikenali";
     static LogManager lgmngr = LogManager.getLogManager();
@@ -82,10 +83,12 @@ public class UserAgentD {
     public String tambahTugasIndividu(String nama, String deskripsi, String deadline) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date tanggal = dateFormat.parse(deadline);
+            String[] deadlineSplit = deadline.split("-");
+            String deadlineMerge = deadlineSplit[0]+"/"+deadlineSplit[1]+"/"+deadlineSplit[2];
+            Date tanggal = dateFormat.parse(deadlineMerge);
             TugasIndividu tugas = new TugasIndividu(nama, deskripsi, tanggal);
             this.addTugasIndividu(tugas);
-            return nama + " berhasil ditambahkan sebagai tugas individu";
+            return nama + " berhasil ditambahkan sebagai tugas individu kamu, "+this.id;
         }catch (ParseException e){
             log.log(Level.INFO, "Error while parsing the date");
             return "Tanggal tidak dikenal";
@@ -95,7 +98,9 @@ public class UserAgentD {
     public String tambahTugasKelompok(String nama, String deskripsi, String deadline){
         try{
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date tanggal = dateFormat.parse(deadline);
+            String[] deadlineSplit = deadline.split("-");
+            String deadlineMerge = deadlineSplit[0]+"/"+deadlineSplit[1]+"/"+deadlineSplit[2];
+            Date tanggal = dateFormat.parse(deadlineMerge);
             TugasKelompok tgsKelompok = new TugasKelompok(nama,deskripsi,tanggal,this);
             this.addTugasKelompok(tgsKelompok);
             return nama + " berhasil ditabahkan sebagai tugas kelompok";
