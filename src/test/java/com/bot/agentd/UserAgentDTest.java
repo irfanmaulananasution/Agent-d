@@ -99,6 +99,8 @@ public class UserAgentDTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
     public void testMethodTambahTugasIndividu1(){
         String jawaban = user.tambahTugasIndividu("adpro","tugas individu 1","02/02/2020");
         assertEquals("adpro berhasil ditambahkan sebagai tugas individu",jawaban);
