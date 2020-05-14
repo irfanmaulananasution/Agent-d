@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UserAgentDTest {
     UserAgentD user;
 
+//    buat test method baru yang dipindahin
     @BeforeEach
     public void setUp(){
         user = new UserAgentD("123abc");
