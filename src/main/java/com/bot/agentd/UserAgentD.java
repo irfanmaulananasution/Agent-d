@@ -153,6 +153,7 @@ public class UserAgentD {
             String strTimeEnd = timeFormat.format(timeEnd);
             jawaban += name + " " + day + " " + strTimeStart + " - " + strTimeEnd + "\n";
         }
+        return jawaban;
     }
 
     void addJadwal(Jadwal jadwal){
