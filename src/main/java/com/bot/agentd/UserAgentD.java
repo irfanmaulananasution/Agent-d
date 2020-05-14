@@ -12,23 +12,23 @@ public class UserAgentD {
     String id;
     String uName;
     ArrayList<TugasIndividu> listTugasIndividu;
+    ArrayList<TugasKelompok> listTugasKelompok;
+    ArrayList<Jadwal>  listJadwal;
     String tidakDikenal = "Command Tidak Dikenali";
     static LogManager lgmngr = LogManager.getLogManager();
     static Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-    ArrayList<TugasKelompok> listTugasKelompok;
 
     UserAgentD(String userID, String uname){
         id = userID;
         this.uName = uname;
         this.listTugasIndividu = new ArrayList<>();
         this.listTugasKelompok = new ArrayList<>();
+        this.listJadwal = new ArrayList<>();
     }
 
     void addTugasIndividu(TugasIndividu task){
         listTugasIndividu.add(task);
     }
-
     void addTugasKelompok(TugasKelompok tugasKelompok){
         listTugasKelompok.add(tugasKelompok);
     }
@@ -42,9 +42,11 @@ public class UserAgentD {
         return "Jangan lupa kerjakan tugas "+namaTugas+", dengan deadline "+deadline;
     }
 
-
     ArrayList<TugasIndividu> getTugasIndividu(){
         return this.listTugasIndividu;
+    }
+    ArrayList<Jadwal> getJadwal(){
+        return this.listJadwal;
     }
 
     public String periksaMessage(String[] pesanSplit){
@@ -58,6 +60,13 @@ public class UserAgentD {
                     case("tugas kelompok"):
                         jawaban = tambahTugasKelompok(pesanSplit[2], pesanSplit[3], pesanSplit[4]);
                         break;
+                    case ("jadwal"):
+                        String name = pesanSplit[2];
+                        String day = pesanSplit[3];
+                        String startTime = pesanSplit[4];
+                        String endTime = pesanSplit[5];
+                        jawaban = this.tambahJadwal(name, day, startTime, endTime);
+                        break;
                     default:
                         jawaban = tidakDikenal;
                 }
@@ -69,6 +78,9 @@ public class UserAgentD {
                         break;
                     case ("tugas kelompok"):
                         jawaban = lihatTugasKelompok(this);
+                        break;
+                    case ("jadwal"):
+                        jawaban = this.lihatJadwal();
                         break;
                     default:
                         jawaban = tidakDikenal;
@@ -111,6 +123,20 @@ public class UserAgentD {
         }
     }
 
+    public String tambahJadwal (String name, String day, String timeStart, String timeEnd) {
+        try {
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            Date timeStartDate = timeFormat.parse(timeStart);
+            Date timeEndDate = timeFormat.parse(timeEnd);
+            Jadwal jadwal = new Jadwal(name, day, timeStartDate, timeEndDate);
+            this.addJadwal(jadwal);
+            return (name + "berhasil ditambahkan dalam jadwal");
+        } catch (ParseException e) {
+            log.log(Level.INFO, "Error while parsing the date");
+            return "Jam tidak dikenal";
+        }
+    }
+
     public String lihatTugasIndividu(){
         String jawaban = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -120,6 +146,27 @@ public class UserAgentD {
             jawaban+="deadline : "+dateFormat.format(this.getTugasIndividu().get(i).getDeadline())+"\n\n";
         }
         return jawaban;
+    }
+    public String lihatJadwal() {
+        String jawaban = "";
+        for (Jadwal jadwalSekarang : this.getJadwal()) {
+            String name = jadwalSekarang.getName();
+            String day = jadwalSekarang.getDay();
+            Date timeStart = jadwalSekarang.getTimeStart();
+            Date timeEnd = jadwalSekarang.getTimeEnd();
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            String strTimeStart = timeFormat.format(timeStart);
+            String strTimeEnd = timeFormat.format(timeEnd);
+            jawaban += name + " " + day + " " + strTimeStart + " - " + strTimeEnd + "\n";
+        }
+        return jawaban;
+    }
+
+    void addJadwal(Jadwal jadwal){
+        listJadwal.add(jadwal);
+    }
+    void removeJadwal(Jadwal jadwal) {
+        listJadwal.remove(jadwal);
     }
 
     public String lihatTugasKelompok(UserAgentD user){
