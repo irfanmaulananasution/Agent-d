@@ -1,7 +1,6 @@
 package com.bot.agentd;
 
 import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.FollowEvent;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -74,19 +73,6 @@ public class AgentDApplication extends SpringBootServletInitializer {
 
         }
     }
-
-    @EventMapping
-    public void handlePushEvent(String userID, String message) {
-        TextMessage jawabanDalamBentukTextMessage = new TextMessage(message);
-        try {
-            lineMessagingClient
-                    .pushMessage(new PushMessage(userID, jawabanDalamBentukTextMessage))
-                    .get();
-        } catch (NullPointerException | InterruptedException | ExecutionException e) {
-            System.out.print("Error found, please try again\n");
-        }
-    }
-
 
     private void replyText(String replyToken, String jawaban){
         TextMessage jawabanDalamBentukTextMessage = new TextMessage(jawaban);
