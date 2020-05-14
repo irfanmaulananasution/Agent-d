@@ -1,10 +1,10 @@
 # **Agent-D ChatBot**
 Advance Programming's Final Project
 ## Pipelines Status
-[![pipeline status](https://gitlab.com/ProjectNara/project-akhir-ppw/badges/master/pipeline.svg)](https://gitlab.com/raihan2604/agent-d/commits/master)
+[![pipeline status](https://gitlab.com/raihan2604/agent-d/badges/master/pipeline.svg)](https://gitlab.com/raihan2604/agent-d/commits/master)
 
 ## Code Coverage
-[![coverage report](https://gitlab.com/ProjectNara/project-akhir-ppw/badges/master/coverage.svg)](https://gitlab.com//raihan2604/agent-d/commits/master)
+[![coverage report](https://gitlab.com/raihan2604/agent-d/badges/master/coverage.svg)](https://gitlab.com/raihan2604/agent-d/commits/master)
 
 ## Project Description
 Agent-D is your personal agenda, which can remember and organize all your schedule, tasks, even To-Do's!!

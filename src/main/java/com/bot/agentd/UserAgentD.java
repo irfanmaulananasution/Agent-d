@@ -1,10 +1,20 @@
 package com.bot.agentd;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class UserAgentD {
     String id;
     ArrayList<TugasIndividu> listTugasIndividu;
+    String tidakDikenal = "Command Tidak Dikenali";
+    static LogManager lgmngr = LogManager.getLogManager();
+    static Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     ArrayList<TugasKelompok> listTugasKelompok;
 
     UserAgentD(String userID){
@@ -33,6 +43,99 @@ public class UserAgentD {
 
     ArrayList<TugasIndividu> getTugasIndividu(){
         return this.listTugasIndividu;
+    }
+
+    public String periksaMessage(String[] pesanSplit){
+        String jawaban = "";
+        switch (pesanSplit[0].toLowerCase()){
+            case("tambah"):
+                switch (pesanSplit[1].toLowerCase()){
+                    case("tugas individu"):
+                        jawaban = this.tambahTugasIndividu(pesanSplit[2], pesanSplit[3], pesanSplit[4]);
+                        break;
+                    case("tugas kelompok"):
+                        jawaban = tambahTugasKelompok(pesanSplit[2], pesanSplit[3], pesanSplit[4]);
+                        break;
+                    default:
+                        jawaban = tidakDikenal;
+                }
+                break;
+            case("lihat"):
+                switch (pesanSplit[1].toLowerCase()){
+                    case ("tugas individu"):
+                        jawaban = this.lihatTugasIndividu();
+                        break;
+                    case ("tugas kelompok"):
+                        jawaban = lihatTugasKelompok(this);
+                        break;
+                    default:
+                        jawaban = tidakDikenal;
+                }
+                break;
+            default:
+                jawaban = tidakDikenal;
+        }
+
+        return jawaban;
+    }
+
+    public String tambahTugasIndividu(String nama, String deskripsi, String deadline) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date tanggal = dateFormat.parse(deadline);
+            TugasIndividu tugas = new TugasIndividu(nama, deskripsi, tanggal);
+            this.addTugasIndividu(tugas);
+            return nama + " berhasil ditambahkan sebagai tugas individu";
+        }catch (ParseException e){
+            log.log(Level.INFO, "Error while parsing the date");
+            return "Tanggal tidak dikenal";
+        }
+    }
+
+    public String tambahTugasKelompok(String nama, String deskripsi, String deadline){
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date tanggal = dateFormat.parse(deadline);
+            TugasKelompok tgsKelompok = new TugasKelompok(nama,deskripsi,tanggal,this);
+            this.addTugasKelompok(tgsKelompok);
+            return nama + " berhasil ditabahkan sebagai tugas kelompok";
+        }catch (ParseException e){
+            log.log(Level.INFO, "Error while parsing the date");
+            return "Tanggal tidak dikenal";
+        }
+    }
+
+    public String lihatTugasIndividu(){
+        String jawaban = "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        for(int i = 0;i<this.listTugasIndividu.size();i++){
+            jawaban+="nama tugas : "+this.getTugasIndividu().get(i).getName()+"\n";
+            jawaban+="deskripsi : "+this.getTugasIndividu().get(i).getDesc()+"\n";
+            jawaban+="deadline : "+dateFormat.format(this.getTugasIndividu().get(i).getDeadline())+"\n\n";
+        }
+        return jawaban;
+    }
+
+    public String lihatTugasKelompok(UserAgentD user){
+        String jawaban = "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        for(int iteratorTugasKelompok = 0; iteratorTugasKelompok < user.listTugasKelompok.size(); iteratorTugasKelompok++){
+            TugasKelompok tgsKelompok = user.getTugasKelompok().get(iteratorTugasKelompok);
+            ArrayList<UserAgentD> anggota = tgsKelompok.getAnggota();
+            String anggotaKelompok = "";
+            for(int iteratorAnggota = 0; iteratorAnggota < anggota.size(); iteratorAnggota++){
+                if(iteratorAnggota !=anggota.size()-1)
+                    anggotaKelompok+=anggota.get(iteratorAnggota).id+", ";
+                else
+                    anggotaKelompok+=anggota.get(iteratorAnggota).id+".";
+            }
+            jawaban+="nama tugas kelompok : "+tgsKelompok.getName()+"\n";
+            jawaban+="desktripsi : "+tgsKelompok.getDesc()+"\n";
+            jawaban+="deadline : "+dateFormat.format(tgsKelompok.getDeadline())+"\n";
+            jawaban+="anggota : "+anggotaKelompok+"\n\n";
+
+        }
+        return jawaban;
     }
 
     ArrayList<TugasKelompok> getTugasKelompok() {
