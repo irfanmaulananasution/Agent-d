@@ -47,4 +47,35 @@ public class UserAgentDTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testMethodAddTugasKelompok(){
+        try {
+            assertEquals(0, user.getTugasIndividu().size());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date tanggal = simpleDateFormat.parse("01/01/2020");
+            TugasKelompok task = new TugasKelompok("tugas 1", "desc tugas 1", tanggal,user);
+            user.addTugasKelompok(task);
+            assertEquals(1,user.getTugasKelompok().size());
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testMethodGetTugasKelompok(){
+        try {
+            assertEquals(0, user.getTugasKelompok().size());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date tanggal = simpleDateFormat.parse("01/01/2020");
+            TugasKelompok task = new TugasKelompok("tugas 1", "desc tugas 1", tanggal, user);
+            TugasKelompok task2 = new TugasKelompok("tugas 2", "desc tugas 2", tanggal, user);
+            user.addTugasKelompok(task);
+            user.addTugasKelompok(task2);
+            assertEquals("tugas 1",user.getTugasKelompok().get(0).getName());
+            assertEquals("tugas 2",user.getTugasKelompok().get(1).getName());
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+    }
 }

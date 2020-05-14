@@ -7,19 +7,18 @@ public class TugasKelompok implements Tugas {
     String name;
     String desc;
     Date deadline;
-    UserAgentD owner;
     ArrayList<UserAgentD> anggota;
 
-    TugasKelompok(String name,String desc, Date deadline, UserAgentD owner){
+    TugasKelompok(String name,String desc, Date deadline, UserAgentD user){
         this.name = name;
         this.desc = desc;
         this.deadline = deadline;
-        this.owner = owner;
         this.anggota = new ArrayList<>();
+        anggota.add(user);
     }
 
     public void addAnggota(UserAgentD anggota){
-        if(isAnggotaExist(anggota)==false) {
+        if(!isAnggotaExist(anggota)) {
             this.anggota.add(anggota);
             anggota.addTugasKelompok(this);
         }
@@ -32,10 +31,8 @@ public class TugasKelompok implements Tugas {
         }
     }
 
-    private boolean isAnggotaExist(UserAgentD anggota){
-        if(this.anggota.contains(anggota))
-            return true;
-        return false;
+    public boolean isAnggotaExist(UserAgentD anggota){
+        return this.anggota.contains(anggota);
     }
 
     public void remindDeadline(){
@@ -74,11 +71,7 @@ public class TugasKelompok implements Tugas {
         this.deadline = deadline;
     }
 
-    public UserAgentD getOwner() {
-        return owner;
-    }
-
-    public void setOwner(UserAgentD owner) {
-        this.owner = owner;
+    public ArrayList<UserAgentD> getAnggota() {
+        return anggota;
     }
 }
