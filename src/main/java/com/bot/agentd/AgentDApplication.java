@@ -49,7 +49,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
         String pesan = messageEvent.getMessage().getText();
         String[] pesanSplit = pesan.split("/");
         if(repo.get(userId)==null){
-            repo.put(userId,new UserAgentD(userId));
+            repo.put(userId,new UserAgentD(userId, userName));
         }
         UserAgentD user = repo.get(userId);
         String jawaban = user.periksaMessage(pesanSplit);
@@ -59,8 +59,10 @@ public class AgentDApplication extends SpringBootServletInitializer {
     }
 
     @EventMapping
-    public void handleFollowEvent(FollowEvent event) {
-        UserAgentD user = new UserAgentD(event.getSource().getSenderId());
+    public void handleFollowEvent(FollowEvent event) throws ExecutionException, InterruptedException {
+        String userId = event.getSource().getUserId();
+        String userName = lineMessagingClient.getProfile(userId).get().getDisplayName();
+        UserAgentD user = new UserAgentD(userId, userName);
         repo.put(event.getSource().getSenderId(),user);
     }
 

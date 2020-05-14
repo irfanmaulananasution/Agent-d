@@ -18,8 +18,9 @@ public class UserAgentD {
 
     ArrayList<TugasKelompok> listTugasKelompok;
 
-    UserAgentD(String userID){
+    UserAgentD(String userID, String uname){
         id = userID;
+        this.uName = uname;
         this.listTugasIndividu = new ArrayList<>();
         this.listTugasKelompok = new ArrayList<>();
     }
