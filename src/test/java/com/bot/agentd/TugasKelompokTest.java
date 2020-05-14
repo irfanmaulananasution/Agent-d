@@ -19,7 +19,7 @@ public class TugasKelompokTest {
     public void setUp() {
         try {
             Date tanggal = dateFormat.parse("01/01/2020");
-            user = new UserAgentD("1");
+            user = new UserAgentD("1","satu");
             tugasKelompok = new TugasKelompok("tugasKelompok1","desc1",tanggal,user);
         }catch (ParseException e){
             e.printStackTrace();
@@ -29,20 +29,20 @@ public class TugasKelompokTest {
     @Test
     public void testMethodAddAnggota() {
         assertEquals(1,tugasKelompok.getAnggota().size());
-        UserAgentD user2 = new UserAgentD("2");
+        UserAgentD user2 = new UserAgentD("2","dua");
         tugasKelompok.addAnggota(user2);
         assertEquals(2,tugasKelompok.getAnggota().size());
         tugasKelompok.addAnggota(user2);
         assertEquals(2,tugasKelompok.getAnggota().size());
-        UserAgentD user3 = new UserAgentD("3");
+        UserAgentD user3 = new UserAgentD("3","tiga");
         tugasKelompok.addAnggota(user3);
         assertEquals(3,tugasKelompok.getAnggota().size());
     }
 
     @Test
     public void testMethodRemoveAnggota() {
-        UserAgentD user2 = new UserAgentD("2");
-        UserAgentD user3 = new UserAgentD("3");
+        UserAgentD user2 = new UserAgentD("2","dua");
+        UserAgentD user3 = new UserAgentD("3","tiga");
         assertEquals(1,tugasKelompok.getAnggota().size());
         tugasKelompok.addAnggota(user2);
         tugasKelompok.addAnggota(user3);
@@ -58,7 +58,7 @@ public class TugasKelompokTest {
 
     @Test
     public void testMethodIsAnggotaExist() {
-        UserAgentD user2 = new UserAgentD("2");
+        UserAgentD user2 = new UserAgentD("2","dua");
         assertTrue(tugasKelompok.isAnggotaExist(user));
         assertFalse(tugasKelompok.isAnggotaExist(user2));
     }
@@ -108,7 +108,7 @@ public class TugasKelompokTest {
 
     @Test
     public void testMethodGetAnggota(){
-        UserAgentD user2 = new UserAgentD("2");
+        UserAgentD user2 = new UserAgentD("2","dua");
         assertEquals(1,tugasKelompok.getAnggota().size());
         tugasKelompok.addAnggota(user2);
         assertEquals(2,tugasKelompok.getAnggota().size());
