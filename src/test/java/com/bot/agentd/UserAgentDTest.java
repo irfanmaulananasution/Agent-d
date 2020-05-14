@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,7 +32,6 @@ public class UserAgentDTest {
             e.printStackTrace();
         }
     }
-
     @Test
     public void testMethodGetTugasIndividu(){
         try {
@@ -73,6 +73,34 @@ public class UserAgentDTest {
     }
 
     @Test
+    public void testMethodAddJadwal(){
+        try{
+            assertEquals(0, user.getTugasIndividu().size());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            Date timeStart = timeFormat.parse("12:00:00");
+            Date timeEnd = timeFormat.parse("14:00:00");
+            Jadwal jadwal1 = new Jadwal ("Jadwal 1", "Monday", timeStart, timeEnd);
+            user.addJadwal(jadwal1);
+            assertEquals(1, user.getJadwal().size());
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testMethodGetJadwal() {
+        try {
+            assertEquals(0, user.getTugasIndividu().size());
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            Date timeStart = timeFormat.parse("13:00:00");
+            Date timeEnd = timeFormat.parse("14:00:00");
+            Jadwal jadwal2 = new Jadwal("Jadwal 2", "Monday", timeStart, timeEnd);
+            user.addJadwal(jadwal2);
+            assertEquals("Jadwal 2", user.getJadwal().get(0).getName());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void testMethodTambahTugasIndividu1(){
         String jawaban = user.tambahTugasIndividu("adpro","tugas individu 1","02-02-2020");
         assertEquals("adpro berhasil ditambahkan sebagai tugas individu kamu, 123abc",jawaban);
