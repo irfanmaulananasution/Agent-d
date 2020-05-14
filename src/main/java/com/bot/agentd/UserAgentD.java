@@ -178,9 +178,9 @@ public class UserAgentD {
             String anggotaKelompok = "";
             for(int iteratorAnggota = 0; iteratorAnggota < anggota.size(); iteratorAnggota++){
                 if(iteratorAnggota !=anggota.size()-1)
-                    anggotaKelompok+=anggota.get(iteratorAnggota).uName+", ";
+                    anggotaKelompok+=anggota.get(iteratorAnggota).id+", ";
                 else
-                    anggotaKelompok+=anggota.get(iteratorAnggota).uName+".";
+                    anggotaKelompok+=anggota.get(iteratorAnggota).id+".";
             }
             jawaban+="nama tugas kelompok : "+tgsKelompok.getName()+"\n";
             jawaban+="desktripsi : "+tgsKelompok.getDesc()+"\n";
@@ -194,5 +194,4 @@ public class UserAgentD {
     ArrayList<TugasKelompok> getTugasKelompok() {
         return listTugasKelompok;
     }
-    //test
 }
