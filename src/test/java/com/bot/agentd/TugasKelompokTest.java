@@ -8,22 +8,64 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TugasKelompokTest {
     private TugasKelompok tugasKelompok;
-    UserAgentD owner;
+    UserAgentD user;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @BeforeEach
     public void setUp() {
         try {
             Date tanggal = dateFormat.parse("01/01/2020");
-            owner = new UserAgentD("1");
-            tugasKelompok = new TugasKelompok("tugasKelompok1","desc1",tanggal,owner);
+            user = new UserAgentD("1");
+            tugasKelompok = new TugasKelompok("tugasKelompok1","desc1",tanggal,user);
         }catch (ParseException e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testMethodAddAnggota() {
+        assertEquals(1,tugasKelompok.getAnggota().size());
+        UserAgentD user2 = new UserAgentD("2");
+        tugasKelompok.addAnggota(user2);
+        assertEquals(2,tugasKelompok.getAnggota().size());
+        tugasKelompok.addAnggota(user2);
+        assertEquals(2,tugasKelompok.getAnggota().size());
+        UserAgentD user3 = new UserAgentD("3");
+        tugasKelompok.addAnggota(user3);
+        assertEquals(3,tugasKelompok.getAnggota().size());
+    }
+
+    @Test
+    public void testMethodRemoveAnggota() {
+        UserAgentD user2 = new UserAgentD("2");
+        UserAgentD user3 = new UserAgentD("3");
+        assertEquals(1,tugasKelompok.getAnggota().size());
+        tugasKelompok.addAnggota(user2);
+        tugasKelompok.addAnggota(user3);
+        assertEquals(3,tugasKelompok.getAnggota().size());
+        tugasKelompok.removeAnggota(user2);
+        assertEquals(2,tugasKelompok.getAnggota().size());
+        tugasKelompok.removeAnggota(user2);
+        assertEquals(2,tugasKelompok.getAnggota().size());
+        tugasKelompok.removeAnggota(user3);
+        assertEquals(1,tugasKelompok.getAnggota().size());
+
+    }
+
+    @Test
+    public void testMethodIsAnggotaExist() {
+        UserAgentD user2 = new UserAgentD("2");
+        assertTrue(tugasKelompok.isAnggotaExist(user));
+        assertFalse(tugasKelompok.isAnggotaExist(user2));
+    }
+
+    @Test
+    public void testMethodRemindDeadline() {
+
     }
 
     @Test
@@ -45,7 +87,7 @@ public class TugasKelompokTest {
         assertEquals("desc2",tugasKelompok.getDesc());
     }
     @Test
-    public void testMethodGetDate() {
+    public void testMethodGetDeadline() {
         try {
             Date tgl = dateFormat.parse("01/01/2020");
             assertEquals(tgl, tugasKelompok.getDeadline());
@@ -54,7 +96,7 @@ public class TugasKelompokTest {
         }
     }
     @Test
-    public void testMethodSetDate() {
+    public void testMethodSetDeadline() {
         try {
             Date tgl = dateFormat.parse("02/01/2020");
             tugasKelompok.setDeadline(tgl);
@@ -63,15 +105,14 @@ public class TugasKelompokTest {
             e.printStackTrace();
         }
     }
+
     @Test
-    public void testMethodGetOwner() {
-        assertEquals(owner,tugasKelompok.getOwner());
-    }
-    @Test
-    public void testMethodSetOwner() {
-        UserAgentD owner2 = new UserAgentD("2");
-        tugasKelompok.setOwner(owner2);
-        assertEquals(owner2,tugasKelompok.getOwner());
+    public void testMethodGetAnggota(){
+        UserAgentD user2 = new UserAgentD("2");
+        assertEquals(1,tugasKelompok.getAnggota().size());
+        tugasKelompok.addAnggota(user2);
+        assertEquals(2,tugasKelompok.getAnggota().size());
     }
 
 }
+

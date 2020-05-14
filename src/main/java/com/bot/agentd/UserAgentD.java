@@ -11,6 +11,10 @@ import java.util.logging.Logger;
 public class UserAgentD {
     String id;
     ArrayList<TugasIndividu> listTugasIndividu;
+    String tidakDikenal = "Command Tidak Dikenali";
+    static LogManager lgmngr = LogManager.getLogManager();
+    static Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
     ArrayList<TugasKelompok> listTugasKelompok;
     ArrayList<Jadwal>  listJadwal;
     String tidakDikenal = "Command Tidak Dikenali";
@@ -38,7 +42,6 @@ public class UserAgentD {
         String namaTugas = tugasKelompok.getName();
         String deadline = tugasKelompok.getDeadline().toString();
         return "Jangan lupa kerjakan tugas "+namaTugas+", dengan deadline "+deadline;
-
     }
 
     ArrayList<TugasIndividu> getTugasIndividu(){
@@ -56,6 +59,9 @@ public class UserAgentD {
                     case("tugas individu"):
                         jawaban = this.tambahTugasIndividu(pesanSplit[2], pesanSplit[3], pesanSplit[4]);
                         break;
+                    case("tugas kelompok"):
+                        jawaban = tambahTugasKelompok(pesanSplit[2], pesanSplit[3], pesanSplit[4]);
+                        break;
                     case ("jadwal"):
                         String name = pesanSplit[2];
                         String day = pesanSplit[3];
@@ -71,6 +77,9 @@ public class UserAgentD {
                 switch (pesanSplit[1].toLowerCase()){
                     case ("tugas individu"):
                         jawaban = this.lihatTugasIndividu();
+                        break;
+                    case ("tugas kelompok"):
+                        jawaban = lihatTugasKelompok(this);
                         break;
                     case ("jadwal"):
                         jawaban = this.lihatJadwal();
@@ -99,6 +108,45 @@ public class UserAgentD {
         }
     }
 
+    public String tambahTugasKelompok(String nama, String deskripsi, String deadline){
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date tanggal = dateFormat.parse(deadline);
+            TugasKelompok tgsKelompok = new TugasKelompok(nama,deskripsi,tanggal,this);
+            this.addTugasKelompok(tgsKelompok);
+            return nama + " berhasil ditabahkan sebagai tugas kelompok";
+        }catch (ParseException e){
+            log.log(Level.INFO, "Error while parsing the date");
+            return "Tanggal tidak dikenal";
+        }
+    }
+    public String tambahTugasIndividu(String nama, String deskripsi, String deadline) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date tanggal = dateFormat.parse(deadline);
+            TugasIndividu tugas = new TugasIndividu(nama, deskripsi, tanggal);
+            this.addTugasIndividu(tugas);
+            return nama + " berhasil ditambahkan sebagai tugas individu";
+        }catch (ParseException e){
+            log.log(Level.INFO, "Error while parsing the date");
+            return "Tanggal tidak dikenal";
+        }
+    }
+
+    public String tambahJadwal (String name, String day, String timeStart, String timeEnd) {
+        try {
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            Date timeStartDate = timeFormat.parse(timeStart);
+            Date timeEndDate = timeFormat.parse(timeEnd);
+            Jadwal jadwal = new Jadwal(name, day, timeStartDate, timeEndDate);
+            this.addJadwal(jadwal);
+            return (name + "berhasil ditambahkan dalam jadwal");
+        } catch (ParseException e) {
+            log.log(Level.INFO, "Error while parsing the date");
+            return "Jam tidak dikenal";
+        }
+    }
+
     public String lihatTugasIndividu(){
         String jawaban = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -109,21 +157,7 @@ public class UserAgentD {
         }
         return jawaban;
     }
-
-    public String tambahJadwal (String name, String day, String timeStart, String timeEnd){
-        try{
-            SimpleDateFormat timeFormat = new SimpleDateFormat( "HH:mm:ss");
-            Date timeStartDate = timeFormat.parse(timeStart);
-            Date timeEndDate = timeFormat.parse(timeEnd);
-            Jadwal jadwal = new Jadwal(name, day, timeStartDate, timeEndDate);
-            this.addJadwal(jadwal);
-            return (name + "berhasil ditambahkan dalam jadwal");
-        }catch (ParseException e){
-            log.log(Level.INFO, "Error while parsing the date");
-            return "Tanggal tidak dikenal";
-        }
-    }
-    public String lihatJadwal(){
+    public String lihatJadwal() {
         String jawaban = "";
         for (Jadwal jadwalSekarang : this.getJadwal()) {
             String name = jadwalSekarang.getName();
@@ -135,7 +169,6 @@ public class UserAgentD {
             String strTimeEnd = timeFormat.format(timeEnd);
             jawaban += name + " " + day + " " + strTimeStart + " - " + strTimeEnd + "\n";
         }
-        return jawaban;
     }
 
     void addJadwal(Jadwal jadwal){
@@ -143,5 +176,30 @@ public class UserAgentD {
     }
     void removeJadwal(Jadwal jadwal){
         listJadwal.remove(jadwal);
+
+    public String lihatTugasKelompok(UserAgentD user){
+        String jawaban = "";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        for(int iteratorTugasKelompok = 0; iteratorTugasKelompok < user.listTugasKelompok.size(); iteratorTugasKelompok++){
+            TugasKelompok tgsKelompok = user.getTugasKelompok().get(iteratorTugasKelompok);
+            ArrayList<UserAgentD> anggota = tgsKelompok.getAnggota();
+            String anggotaKelompok = "";
+            for(int iteratorAnggota = 0; iteratorAnggota < anggota.size(); iteratorAnggota++){
+                if(iteratorAnggota !=anggota.size()-1)
+                    anggotaKelompok+=anggota.get(iteratorAnggota).id+", ";
+                else
+                    anggotaKelompok+=anggota.get(iteratorAnggota).id+".";
+            }
+            jawaban+="nama tugas kelompok : "+tgsKelompok.getName()+"\n";
+            jawaban+="desktripsi : "+tgsKelompok.getDesc()+"\n";
+            jawaban+="deadline : "+dateFormat.format(tgsKelompok.getDeadline())+"\n";
+            jawaban+="anggota : "+anggotaKelompok+"\n\n";
+
+        }
+        return jawaban;
+    }
+
+    ArrayList<TugasKelompok> getTugasKelompok() {
+        return listTugasKelompok;
     }
 }

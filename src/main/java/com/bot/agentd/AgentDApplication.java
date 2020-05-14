@@ -8,22 +8,19 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-import java.util.ArrayList;
-
 
 @SpringBootApplication
 @LineMessageHandler
@@ -34,8 +31,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
 
     static HashMap<String, UserAgentD> repo = new HashMap<>();
     String tidakDikenal = "Command tidak dikenal";
-    LogManager lgmngr = LogManager.getLogManager();
-    Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
@@ -74,7 +70,7 @@ public class AgentDApplication extends SpringBootServletInitializer {
                     .replyMessage(new ReplyMessage(replyToken, jawabanDalamBentukTextMessage))
                     .get();
         } catch (InterruptedException | ExecutionException e) {
-            log.log(Level.INFO, "Error while sending message");
+            UserAgentD.log.log(Level.INFO, "Error while sending message");
             Thread.currentThread().interrupt();
         }
     }
