@@ -174,8 +174,9 @@ public class UserAgentD {
     void addJadwal(Jadwal jadwal){
         listJadwal.add(jadwal);
     }
-    void removeJadwal(Jadwal jadwal){
+    void removeJadwal(Jadwal jadwal) {
         listJadwal.remove(jadwal);
+    }
 
     public String lihatTugasKelompok(UserAgentD user){
         String jawaban = "";
