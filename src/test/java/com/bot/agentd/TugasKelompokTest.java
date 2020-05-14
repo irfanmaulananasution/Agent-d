@@ -27,44 +27,6 @@ public class TugasKelompokTest {
     }
 
     @Test
-    public void testMethodGetName() {
-        assertEquals("tugasKelompok1",tugasKelompok.getName());
-    }
-    @Test
-    public void testMethodSetName() {
-        tugasKelompok.setName("tugasKelompok2");
-        assertEquals("tugasKelompok2",tugasKelompok.getName());
-    }
-    @Test
-    public void testMethodGetDesc() {
-        assertEquals("desc1",tugasKelompok.getDesc());
-    }
-    @Test
-    public void testMethodSetDesc() {
-        tugasKelompok.setDesc("desc2");
-        assertEquals("desc2",tugasKelompok.getDesc());
-    }
-    @Test
-    public void testMethodGetDeadline() {
-        try {
-            Date tgl = dateFormat.parse("01/01/2020");
-            assertEquals(tgl, tugasKelompok.getDeadline());
-        }catch (ParseException e){
-            e.printStackTrace();
-        }
-    }
-    @Test
-    public void testMethodSetDeadline() {
-        try {
-            Date tgl = dateFormat.parse("02/01/2020");
-            tugasKelompok.setDeadline(tgl);
-            assertEquals(tgl, tugasKelompok.getDeadline());
-        }catch (ParseException e){
-            e.printStackTrace();
-        }
-    }
-
-    @Test
     public void testMethodAddAnggota() {
         assertEquals(1,tugasKelompok.getAnggota().size());
         UserAgentD user2 = new UserAgentD("2");
@@ -104,6 +66,52 @@ public class TugasKelompokTest {
     @Test
     public void testMethodRemindDeadline() {
 
+    }
+
+    @Test
+    public void testMethodGetName() {
+        assertEquals("tugasKelompok1",tugasKelompok.getName());
+    }
+    @Test
+    public void testMethodSetName() {
+        tugasKelompok.setName("tugasKelompok2");
+        assertEquals("tugasKelompok2",tugasKelompok.getName());
+    }
+    @Test
+    public void testMethodGetDesc() {
+        assertEquals("desc1",tugasKelompok.getDesc());
+    }
+    @Test
+    public void testMethodSetDesc() {
+        tugasKelompok.setDesc("desc2");
+        assertEquals("desc2",tugasKelompok.getDesc());
+    }
+    @Test
+    public void testMethodGetDeadline() {
+        try {
+            Date tgl = dateFormat.parse("01/01/2020");
+            assertEquals(tgl, tugasKelompok.getDeadline());
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testMethodSetDeadline() {
+        try {
+            Date tgl = dateFormat.parse("02/01/2020");
+            tugasKelompok.setDeadline(tgl);
+            assertEquals(tgl, tugasKelompok.getDeadline());
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testMethodGetAnggota(){
+        UserAgentD user2 = new UserAgentD("2");
+        assertEquals(1,tugasKelompok.getAnggota().size());
+        tugasKelompok.addAnggota(user2);
+        assertEquals(2,tugasKelompok.getAnggota().size());
     }
 
 }
