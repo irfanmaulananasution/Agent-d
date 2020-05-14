@@ -44,27 +44,35 @@ public class AgentDApplication extends SpringBootServletInitializer {
     }
 
     @EventMapping
-    public void handleTextEvent(MessageEvent<TextMessageContent> messageEvent) throws ExecutionException, InterruptedException {
-        String userId = messageEvent.getSource().getUserId();
-        String userName = lineMessagingClient.getProfile(userId).get().getDisplayName();
-        String pesan = messageEvent.getMessage().getText();
-        String[] pesanSplit = pesan.split("/");
-        if(repo.get(userId)==null){
-            repo.put(userId,new UserAgentD(userId, userName));
-        }
-        UserAgentD user = repo.get(userId);
-        String jawaban = user.periksaMessage(pesanSplit);
+    public void handleTextEvent(MessageEvent<TextMessageContent> messageEvent) {
+        try {
+            String userId = messageEvent.getSource().getUserId();
+            String userName = lineMessagingClient.getProfile(userId).get().getDisplayName();
+            String pesan = messageEvent.getMessage().getText();
+            String[] pesanSplit = pesan.split("/");
+            if (repo.get(userId) == null) {
+                repo.put(userId, new UserAgentD(userId, userName));
+            }
+            UserAgentD user = repo.get(userId);
+            String jawaban = user.periksaMessage(pesanSplit);
 
-        String replyToken = messageEvent.getReplyToken();
-        replyText(replyToken, jawaban);
+            String replyToken = messageEvent.getReplyToken();
+            replyText(replyToken, jawaban);
+        }catch (ExecutionException | InterruptedException e){
+
+        }
     }
 
     @EventMapping
-    public void handleFollowEvent(FollowEvent event) throws ExecutionException, InterruptedException {
-        String userId = event.getSource().getUserId();
-        String userName = lineMessagingClient.getProfile(userId).get().getDisplayName();
-        UserAgentD user = new UserAgentD(userId, userName);
-        repo.put(event.getSource().getSenderId(),user);
+    public void handleFollowEvent(FollowEvent event) {
+        try {
+            String userId = event.getSource().getUserId();
+            String userName = lineMessagingClient.getProfile(userId).get().getDisplayName();
+            UserAgentD user = new UserAgentD(userId, userName);
+            repo.put(event.getSource().getSenderId(), user);
+        }catch (ExecutionException | InterruptedException e){
+
+        }
     }
 
     @EventMapping
