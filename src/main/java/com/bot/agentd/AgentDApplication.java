@@ -1,6 +1,7 @@
 package com.bot.agentd;
 
 import com.bot.agentd.core.UserAgentD;
+import com.bot.agentd.service.AgentDService;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.FollowEvent;
@@ -28,8 +29,8 @@ public class AgentDApplication extends SpringBootServletInitializer {
     @Autowired
     private LineMessagingClient lineMessagingClient;
 
-    static HashMap<String, UserAgentD> repo = new HashMap<>();
-    String tidakDikenal = "Command tidak dikenal";
+    @Autowired
+    private AgentDService agentDService;
 
 
     @Override
@@ -48,26 +49,13 @@ public class AgentDApplication extends SpringBootServletInitializer {
             String userName = lineMessagingClient.getProfile(userId).get().getDisplayName();
             String pesan = messageEvent.getMessage().getText();
             String[] pesanSplit = pesan.split("/");
-            if (repo.get(userId) == null) {
-                repo.put(userId, new UserAgentD(userId, userName));
+            if(!agentDService.isUserRegistered(userId)) {
+                agentDService.registerUser(userId, userName);
             }
-            UserAgentD user = repo.get(userId);
-            String jawaban = user.periksaMessage(pesanSplit);
+            String jawaban = agentDService.periksaMessage(userId,pesanSplit);
 
             String replyToken = messageEvent.getReplyToken();
             replyText(replyToken, jawaban);
-        }catch (ExecutionException | InterruptedException e){
-
-        }
-    }
-
-    @EventMapping
-    public void handleFollowEvent(FollowEvent event) {
-        try {
-            String userId = event.getSource().getUserId();
-            String userName = lineMessagingClient.getProfile(userId).get().getDisplayName();
-            UserAgentD user = new UserAgentD(userId, userName);
-            repo.put(event.getSource().getSenderId(), user);
         }catch (ExecutionException | InterruptedException e){
 
         }
