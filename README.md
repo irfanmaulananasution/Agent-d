@@ -14,8 +14,8 @@ Even more, you can share your tasks with your coworker so they also remember the
 Line ID : @345qgumm
 
 ## Completed Features
-1. add individual tasks -> tambah-tugas individu- < nama tugas > - < deskripsi > -<deadline dd/mm/yyy>
-2. see individual tasks -> lihat-tugas individu
+1. add individual tasks -> tambah/tugas individu/ < nama tugas > / < deskripsi > /<deadline dd-mm-yyy>
+2. see individual tasks -> lihat/tugas individu
 
 ## Contributor
 1. Muhammad Raihan

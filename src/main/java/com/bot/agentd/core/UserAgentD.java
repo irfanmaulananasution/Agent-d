@@ -1,4 +1,4 @@
-package com.bot.agentd;
+package com.bot.agentd.core;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,16 +14,23 @@ public class UserAgentD {
     ArrayList<TugasIndividu> listTugasIndividu;
     ArrayList<TugasKelompok> listTugasKelompok;
     ArrayList<Jadwal>  listJadwal;
-    String tidakDikenal = "Command Tidak Dikenali";
     static LogManager lgmngr = LogManager.getLogManager();
-    static Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    UserAgentD(String userID, String uname){
+    public UserAgentD(String userID, String uname){
         id = userID;
         this.uName = uname;
         this.listTugasIndividu = new ArrayList<>();
         this.listTugasKelompok = new ArrayList<>();
         this.listJadwal = new ArrayList<>();
+    }
+
+    public String getId(){
+        return this.id;
+    }
+
+    public String getuName(){
+        return this.uName;
     }
 
     void addTugasIndividu(TugasIndividu task){
@@ -49,49 +56,6 @@ public class UserAgentD {
         return this.listJadwal;
     }
 
-    public String periksaMessage(String[] pesanSplit){
-        String jawaban = "";
-        switch (pesanSplit[0].toLowerCase()){
-            case("tambah"):
-                switch (pesanSplit[1].toLowerCase()){
-                    case("tugas individu"):
-                        jawaban = this.tambahTugasIndividu(pesanSplit[2], pesanSplit[3], pesanSplit[4]);
-                        break;
-                    case("tugas kelompok"):
-                        jawaban = tambahTugasKelompok(pesanSplit[2], pesanSplit[3], pesanSplit[4]);
-                        break;
-                    case ("jadwal"):
-                        String name = pesanSplit[2];
-                        String day = pesanSplit[3];
-                        String startTime = pesanSplit[4];
-                        String endTime = pesanSplit[5];
-                        jawaban = this.tambahJadwal(name, day, startTime, endTime);
-                        break;
-                    default:
-                        jawaban = tidakDikenal;
-                }
-                break;
-            case("lihat"):
-                switch (pesanSplit[1].toLowerCase()){
-                    case ("tugas individu"):
-                        jawaban = this.lihatTugasIndividu();
-                        break;
-                    case ("tugas kelompok"):
-                        jawaban = lihatTugasKelompok(this);
-                        break;
-                    case ("jadwal"):
-                        jawaban = this.lihatJadwal();
-                        break;
-                    default:
-                        jawaban = tidakDikenal;
-                }
-                break;
-            default:
-                jawaban = tidakDikenal;
-        }
-
-        return jawaban;
-    }
 
     public String tambahTugasIndividu(String nama, String deskripsi, String deadline) {
         try {
@@ -169,18 +133,18 @@ public class UserAgentD {
         listJadwal.remove(jadwal);
     }
 
-    public String lihatTugasKelompok(UserAgentD user){
+    public String lihatTugasKelompok(){
         String jawaban = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        for(int iteratorTugasKelompok = 0; iteratorTugasKelompok < user.listTugasKelompok.size(); iteratorTugasKelompok++){
-            TugasKelompok tgsKelompok = user.getTugasKelompok().get(iteratorTugasKelompok);
+        for(int iteratorTugasKelompok = 0; iteratorTugasKelompok < this.listTugasKelompok.size(); iteratorTugasKelompok++){
+            TugasKelompok tgsKelompok = this.getTugasKelompok().get(iteratorTugasKelompok);
             ArrayList<UserAgentD> anggota = tgsKelompok.getAnggota();
             String anggotaKelompok = "";
             for(int iteratorAnggota = 0; iteratorAnggota < anggota.size(); iteratorAnggota++){
                 if(iteratorAnggota !=anggota.size()-1)
-                    anggotaKelompok+=anggota.get(iteratorAnggota).id+", ";
+                    anggotaKelompok+=anggota.get(iteratorAnggota).uName+", ";
                 else
-                    anggotaKelompok+=anggota.get(iteratorAnggota).id+".";
+                    anggotaKelompok+=anggota.get(iteratorAnggota).uName+".";
             }
             jawaban+="nama tugas kelompok : "+tgsKelompok.getName()+"\n";
             jawaban+="desktripsi : "+tgsKelompok.getDesc()+"\n";

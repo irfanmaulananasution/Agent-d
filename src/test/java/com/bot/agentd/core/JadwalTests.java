@@ -1,5 +1,6 @@
-package com.bot.agentd;
+package com.bot.agentd.core;
 
+import com.bot.agentd.core.Jadwal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
