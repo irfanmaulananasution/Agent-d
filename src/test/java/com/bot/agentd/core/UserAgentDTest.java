@@ -1,12 +1,15 @@
-package com.bot.agentd;
+package com.bot.agentd.core;
 
+import com.bot.agentd.core.Jadwal;
+import com.bot.agentd.core.TugasIndividu;
+import com.bot.agentd.core.TugasKelompok;
+import com.bot.agentd.core.UserAgentD;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

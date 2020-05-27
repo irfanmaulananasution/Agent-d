@@ -1,4 +1,4 @@
-package com.bot.agentd;
+package com.bot.agentd.core;
 
 import java.util.Date;
 
