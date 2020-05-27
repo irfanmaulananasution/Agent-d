@@ -41,7 +41,7 @@ public class AgentDServiceImplTests {
     public void testMethodPeriksaMessage1(){
         String[] command = new String[]{"tambah","tugas individu", "adpro", "tugas individu 1", "02-02-2020"};
         String jawaban = service.periksaMessage("123abc",command);
-        assertEquals("adpro berhasil ditambahkan sebagai tugas individu kamu, 123abc",jawaban);
+        assertEquals("adpro berhasil ditambahkan sebagai tugas individu kamu, Raihan",jawaban);
     }
 
     @Test
