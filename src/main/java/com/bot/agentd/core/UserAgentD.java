@@ -65,7 +65,7 @@ public class UserAgentD {
             Date tanggal = dateFormat.parse(deadlineMerge);
             TugasIndividu tugas = new TugasIndividu(nama, deskripsi, tanggal);
             this.addTugasIndividu(tugas);
-            return nama + " berhasil ditambahkan sebagai tugas individu kamu, "+this.id;
+            return nama + " berhasil ditambahkan sebagai tugas individu kamu, "+this.uName;
         }catch (ParseException e){
             log.log(Level.INFO, "Error while parsing the date");
             return "Tanggal tidak dikenal";
