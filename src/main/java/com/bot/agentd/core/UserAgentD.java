@@ -25,6 +25,14 @@ public class UserAgentD {
         this.listJadwal = new ArrayList<>();
     }
 
+    public String getId(){
+        return this.id;
+    }
+
+    public String getuName(){
+        return this.uName;
+    }
+
     void addTugasIndividu(TugasIndividu task){
         listTugasIndividu.add(task);
     }

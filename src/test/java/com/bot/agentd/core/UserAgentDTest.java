@@ -53,29 +53,6 @@ public class UserAgentDTest {
     }
 
     @Test
-    public void testMethodPeriksaMessage1(){
-        String[] command = new String[]{"tambah","tugas individu", "adpro", "tugas individu 1", "02-02-2020"};
-        String jawaban = user.periksaMessage(command);
-        assertEquals("adpro berhasil ditambahkan sebagai tugas individu kamu, 123abc",jawaban);
-    }
-
-    @Test
-    public void testMethodPeriksaMessage2(){
-        String[] command = new String[]{"tambah","tugas individu", "adpro", "tugas individu 1", "02-02-2020"};
-        String[] command2 = new String[]{"lihat","tugas individu"};
-        user.periksaMessage(command);
-        String jawaban = user.periksaMessage(command2);
-        assertEquals("nama tugas : adpro\ndeskripsi : tugas individu 1\ndeadline : 02/02/2020\n\n",jawaban);
-    }
-
-    @Test
-    public void testMethodPeriksaMessage3(){
-        String[] command = new String[]{"halo"};
-        String jawaban = user.periksaMessage(command);
-        assertEquals("Command Tidak Dikenali",jawaban);
-    }
-
-    @Test
     public void testMethodAddJadwal(){
         try{
             assertEquals(0, user.getTugasIndividu().size());
