@@ -35,6 +35,17 @@ public class UserAgentDTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testMethodGetId(){
+        assertEquals("123abc", user.getId());
+    }
+
+    @Test
+    public void testMethodGetUname(){
+        assertEquals("aku", user.getuName());
+    }
+
     @Test
     public void testMethodGetTugasIndividu(){
         try {
@@ -81,6 +92,7 @@ public class UserAgentDTest {
         }
     }
 
+    @Test
     public void testMethodTambahTugasIndividu1(){
         String jawaban = user.tambahTugasIndividu("adpro","tugas individu 1","02-02-2020");
         assertEquals("adpro berhasil ditambahkan sebagai tugas individu kamu, 123abc",jawaban);
