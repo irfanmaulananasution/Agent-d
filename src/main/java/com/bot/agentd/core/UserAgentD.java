@@ -16,6 +16,7 @@ public class UserAgentD {
     ArrayList<Jadwal>  listJadwal;
     static LogManager lgmngr = LogManager.getLogManager();
     public static Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    public static Quotes qRepo = new Quotes();
 
     public UserAgentD(String userID, String uname){
         id = userID;
