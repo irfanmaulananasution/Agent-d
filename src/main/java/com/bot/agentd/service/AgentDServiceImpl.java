@@ -40,7 +40,6 @@ public class AgentDServiceImpl implements AgentDService {
                     }
                     jawaban = qRepo.getQuote();
                     break;
-
                 case ("tambah"):
                     switch (pesanSplit[1].toLowerCase()) {
                         case ("tugas individu"):
@@ -70,6 +69,16 @@ public class AgentDServiceImpl implements AgentDService {
                             break;
                         case ("jadwal"):
                             jawaban = user.lihatJadwal();
+                            break;
+                        default:
+                            jawaban = tidakDikenal;
+                    }
+                    break;
+                case("remove"):
+                    switch (pesanSplit[1].toLowerCase()){
+                        case("tugas individu"):
+                            String tugasId = pesanSplit[2];
+                            jawaban = user.removeTugasIndividu(tugasId);
                             break;
                         default:
                             jawaban = tidakDikenal;

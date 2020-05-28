@@ -158,4 +158,9 @@ public class UserAgentD {
     ArrayList<TugasKelompok> getTugasKelompok() {
         return listTugasKelompok;
     }
+
+    public String removeTugasIndividu(String tugasId){
+        mapTugasIndividu.remove(tugasId);
+        return "Tugas dengan id "+tugasId+" sudah dihapus dari list tugas kamu, "+this.uName;
+    }
 }
