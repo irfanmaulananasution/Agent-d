@@ -25,12 +25,12 @@ public class UserAgentDTest {
     @Test
     public void testMethodAddTugasIndividu(){
         try {
-            assertEquals(0, user.getTugasIndividu().size());
+            assertEquals(0, user.mapTugasIndividu.size());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date tanggal = simpleDateFormat.parse("01/01/2020");
             TugasIndividu task = new TugasIndividu("tugas 1", "desc tugas 1", tanggal);
             user.addTugasIndividu(task);
-            assertEquals(1,user.getTugasIndividu().size());
+            assertEquals(1,user.mapTugasIndividu.size());
         }catch (ParseException e){
             e.printStackTrace();
         }
@@ -47,26 +47,9 @@ public class UserAgentDTest {
     }
 
     @Test
-    public void testMethodGetTugasIndividu(){
-        try {
-            assertEquals(0, user.getTugasIndividu().size());
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date tanggal = simpleDateFormat.parse("01/01/2020");
-            TugasIndividu task = new TugasIndividu("tugas 1", "desc tugas 1", tanggal);
-            TugasIndividu task2 = new TugasIndividu("tugas 2", "desc tugas 2", tanggal);
-            user.addTugasIndividu(task);
-            user.addTugasIndividu(task2);
-            assertEquals("tugas 1",user.getTugasIndividu().get(0).getName());
-            assertEquals("tugas 2",user.getTugasIndividu().get(1).getName());
-        }catch (ParseException e){
-            e.printStackTrace();
-        }
-    }
-
-    @Test
     public void testMethodAddJadwal(){
         try{
-            assertEquals(0, user.getTugasIndividu().size());
+            assertEquals(0, user.mapTugasIndividu.size());
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
             Date timeStart = timeFormat.parse("12:00:00");
             Date timeEnd = timeFormat.parse("14:00:00");
@@ -80,7 +63,7 @@ public class UserAgentDTest {
     @Test
     public void testMethodGetJadwal() {
         try {
-            assertEquals(0, user.getTugasIndividu().size());
+            assertEquals(0, user.mapTugasIndividu.size());
             SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
             Date timeStart = timeFormat.parse("13:00:00");
             Date timeEnd = timeFormat.parse("14:00:00");
@@ -108,13 +91,13 @@ public class UserAgentDTest {
     public void testMethodLihatTugasIndividu(){
         user.tambahTugasIndividu("adpro","tugas individu 1","02-02-2020");
         String jawaban = user.lihatTugasIndividu();
-        assertEquals("nama tugas : adpro\ndeskripsi : tugas individu 1\ndeadline : 02/02/2020\n\n",jawaban);
+        assertEquals("id tugas : TI6\nnama tugas : adpro\ndeskripsi : tugas individu 1\ndeadline : 02/02/2020\n\n",jawaban);
     }
 
     @Test
     public void testMethodAddTugasKelompok(){
         try {
-            assertEquals(0, user.getTugasIndividu().size());
+            assertEquals(0, user.mapTugasIndividu.size());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date tanggal = simpleDateFormat.parse("01/01/2020");
             TugasKelompok task = new TugasKelompok("tugas 1", "desc tugas 1", tanggal,user);

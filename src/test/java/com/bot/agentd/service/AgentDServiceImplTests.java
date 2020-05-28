@@ -50,7 +50,7 @@ public class AgentDServiceImplTests {
         String[] command2 = new String[]{"lihat","tugas individu"};
         service.periksaMessage("123abc",command);
         String jawaban = service.periksaMessage("123abc",command2);
-        assertEquals("nama tugas : adpro\ndeskripsi : tugas individu 1\ndeadline : 02/02/2020\n\n",jawaban);
+        assertEquals("id tugas : TI10\nnama tugas : adpro\ndeskripsi : tugas individu 1\ndeadline : 02/02/2020\n\n",jawaban);
     }
 
     @Test
