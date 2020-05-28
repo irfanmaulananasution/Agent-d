@@ -75,10 +75,13 @@ public class AgentDServiceImpl implements AgentDService {
                             jawaban = tidakDikenal;
                     }
                     break;
+                case("cekid"):
+                    if(pesanSplit.length==1)jawaban = user.getId();
+                    else jawaban = tidakDikenal;
+                    break;
                 default:
                     jawaban = tidakDikenal;
             }
-
             return jawaban;
         }catch (Exception e){
             UserAgentD.log.log(Level.INFO, "Error Happens in quote initiating");

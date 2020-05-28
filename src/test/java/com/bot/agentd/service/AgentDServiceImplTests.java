@@ -59,4 +59,18 @@ public class AgentDServiceImplTests {
         String jawaban = service.periksaMessage("123abc",command);
         assertEquals("Command Tidak Dikenali",jawaban);
     }
+
+    @Test
+    public void testMethodPeriksaMessage4(){
+        String[] command = new String[]{"cekid"};
+        String jawaban = service.periksaMessage("123abc",command);
+        assertEquals("123abc",jawaban);
+    }
+
+    @Test
+    public void testMethodPeriksaMessage5(){
+        String[] command = new String[]{"cekid", "blablabla"};
+        String jawaban = service.periksaMessage("123abc",command);
+        assertEquals("Command Tidak Dikenali",jawaban);
+    }
 }
