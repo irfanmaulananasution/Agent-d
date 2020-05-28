@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
 public class UserAgentD {
     String id;
     String uName;
-    ArrayList<TugasIndividu> listTugasIndividu;
+    HashMap<String, TugasIndividu> mapTugasIndividu;
     ArrayList<TugasKelompok> listTugasKelompok;
     ArrayList<Jadwal>  listJadwal;
     static LogManager lgmngr = LogManager.getLogManager();
@@ -21,7 +22,7 @@ public class UserAgentD {
     public UserAgentD(String userID, String uname){
         id = userID;
         this.uName = uname;
-        this.listTugasIndividu = new ArrayList<>();
+        this.mapTugasIndividu = new HashMap<>();
         this.listTugasKelompok = new ArrayList<>();
         this.listJadwal = new ArrayList<>();
     }
@@ -35,7 +36,7 @@ public class UserAgentD {
     }
 
     void addTugasIndividu(TugasIndividu task){
-        listTugasIndividu.add(task);
+        mapTugasIndividu.put(task.getId(),task);
     }
     void addTugasKelompok(TugasKelompok tugasKelompok){
         listTugasKelompok.add(tugasKelompok);
@@ -50,9 +51,6 @@ public class UserAgentD {
         return "Jangan lupa kerjakan tugas "+namaTugas+", dengan deadline "+deadline;
     }
 
-    ArrayList<TugasIndividu> getTugasIndividu(){
-        return this.listTugasIndividu;
-    }
     ArrayList<Jadwal> getJadwal(){
         return this.listJadwal;
     }
@@ -105,10 +103,11 @@ public class UserAgentD {
     public String lihatTugasIndividu(){
         String jawaban = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        for(int i = 0;i<this.listTugasIndividu.size();i++){
-            jawaban+="nama tugas : "+this.getTugasIndividu().get(i).getName()+"\n";
-            jawaban+="deskripsi : "+this.getTugasIndividu().get(i).getDesc()+"\n";
-            jawaban+="deadline : "+dateFormat.format(this.getTugasIndividu().get(i).getDeadline())+"\n\n";
+        for(TugasIndividu task :this.mapTugasIndividu.values()) {
+            jawaban += "id tugas : " + task.getId() + "\n";
+            jawaban += "nama tugas : " + task.getName() + "\n";
+            jawaban += "deskripsi : " + task.getDesc() + "\n";
+            jawaban += "deadline : " + dateFormat.format(task.getDeadline()) + "\n\n";
         }
         return jawaban;
     }
@@ -158,5 +157,10 @@ public class UserAgentD {
 
     ArrayList<TugasKelompok> getTugasKelompok() {
         return listTugasKelompok;
+    }
+
+    public String removeTugasIndividu(String tugasId){
+        mapTugasIndividu.remove(tugasId);
+        return "Tugas dengan id "+tugasId+" sudah dihapus dari list tugas kamu, "+this.uName;
     }
 }

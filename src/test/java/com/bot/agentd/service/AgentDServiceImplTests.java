@@ -50,12 +50,26 @@ public class AgentDServiceImplTests {
         String[] command2 = new String[]{"lihat","tugas individu"};
         service.periksaMessage("123abc",command);
         String jawaban = service.periksaMessage("123abc",command2);
-        assertEquals("nama tugas : adpro\ndeskripsi : tugas individu 1\ndeadline : 02/02/2020\n\n",jawaban);
+        assertEquals("id tugas : TI10\nnama tugas : adpro\ndeskripsi : tugas individu 1\ndeadline : 02/02/2020\n\n",jawaban);
     }
 
     @Test
     public void testMethodPeriksaMessage3(){
         String[] command = new String[]{"halo"};
+        String jawaban = service.periksaMessage("123abc",command);
+        assertEquals("Command Tidak Dikenali",jawaban);
+    }
+
+    @Test
+    public void testMethodPeriksaMessage4(){
+        String[] command = new String[]{"cekid"};
+        String jawaban = service.periksaMessage("123abc",command);
+        assertEquals("123abc",jawaban);
+    }
+
+    @Test
+    public void testMethodPeriksaMessage5(){
+        String[] command = new String[]{"cekid", "blablabla"};
         String jawaban = service.periksaMessage("123abc",command);
         assertEquals("Command Tidak Dikenali",jawaban);
     }
