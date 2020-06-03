@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -65,7 +66,7 @@ public class AgentDServiceImpl implements AgentDService {
 
     public String tambahTugasIndividu (UserAgentD user, String nama, String desc, String deadline){
         String[] deadlineSplit = deadline.split("-");
-        LocalDate deadlineDate = LocalDate.of(Integer.parseInt(deadlineSplit[2]), Integer.parseInt(deadlineSplit[1]), Integer.parseInt(deadlineSplit[0]));
+        LocalDateTime deadlineDate = LocalDateTime.of(Integer.parseInt(deadlineSplit[2]), Integer.parseInt(deadlineSplit[1]), Integer.parseInt(deadlineSplit[0]),0,0);
         TugasIndividu task = new TugasIndividu(nama, desc, deadlineDate, user.getId());
         tugasIndividuRepo.save(task);
         return task.getName()+" telah ditambahkan ke dalam daftar tugas individu kamu, "+user.getUserName();

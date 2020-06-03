@@ -2,6 +2,7 @@ package com.bot.agentd.core;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tugas_individu")
@@ -17,7 +18,7 @@ public class TugasIndividu{
     private String desc;
 
     @Column(name = "deadline")
-    private LocalDate deadline;
+    private LocalDateTime deadline;
 
     @Column(name = "ownerId")
     private String ownerId;
@@ -26,7 +27,7 @@ public class TugasIndividu{
 
     }
 
-    public TugasIndividu(String nama, String desc, LocalDate deadline, String ownerId){
+    public TugasIndividu(String nama, String desc, LocalDateTime deadline, String ownerId){
         this.name = nama;
         this.desc = desc;
         setDeadline(deadline);
@@ -41,7 +42,7 @@ public class TugasIndividu{
         this.desc = desc;
     }
 
-    public void setDeadline(LocalDate date){
+    public void setDeadline(LocalDateTime date){
         this.deadline = date;
     }
 
@@ -61,7 +62,7 @@ public class TugasIndividu{
         return this.desc;
     }
 
-    public LocalDate getDeadline(){
+    public LocalDateTime getDeadline(){
         return this.deadline;
     }
     //test
