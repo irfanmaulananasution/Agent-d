@@ -18,7 +18,7 @@ public class TugasIndividu{
     private String desc;
 
     @Column(name = "deadline")
-    private LocalDateTime deadline;
+    private String deadline;
 
     @Column(name = "ownerId")
     private String ownerId;
@@ -27,10 +27,10 @@ public class TugasIndividu{
 
     }
 
-    public TugasIndividu(String nama, String desc, LocalDateTime deadline, String ownerId){
+    public TugasIndividu(String nama, String desc, String deadline, String ownerId){
         this.name = nama;
         this.desc = desc;
-        setDeadline(deadline);
+        this.deadline = deadline;
         this.ownerId = ownerId;
     }
 
@@ -42,7 +42,7 @@ public class TugasIndividu{
         this.desc = desc;
     }
 
-    public void setDeadline(LocalDateTime date){
+    public void setDeadline(String date){
         this.deadline = date;
     }
 
@@ -62,7 +62,7 @@ public class TugasIndividu{
         return this.desc;
     }
 
-    public LocalDateTime getDeadline(){
+    public String getDeadline(){
         return this.deadline;
     }
     //test
