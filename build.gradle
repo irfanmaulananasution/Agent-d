@@ -39,6 +39,10 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.postgresql:postgresql'
+
+
     implementation 'com.linecorp.bot:line-bot-spring-boot:1.15.0'
     implementation 'com.linecorp.bot:line-bot-servlet:1.15.0'
     implementation 'com.linecorp.bot:line-bot-model:1.15.0'
