@@ -64,6 +64,7 @@ public class TugasIndividu{
     public LocalDate getDeadline(){
         return this.deadline;
     }
+    //test
 }
 
 //public class TugasIndividu implements Tugas {
