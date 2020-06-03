@@ -60,6 +60,11 @@ public class AgentDServiceImpl implements AgentDService {
                         jawaban = tidakDikenal;
                 }
                 break;
+            case("remove"):
+                switch (pesanSplit[1].toLowerCase()){
+                    case ("tugas individu"):
+                        jawaban = this.removeTugasIndividu(Long.parseLong(pesanSplit[2]));
+                }
             default:
                 jawaban = tidakDikenal;
         }
@@ -84,6 +89,11 @@ public class AgentDServiceImpl implements AgentDService {
             jawaban += "deadline : " + task.getDeadline() + "\n\n";
         }
         return jawaban;
+    }
+
+    public String removeTugasIndividu(long id){
+        tugasIndividuRepo.deleteTugasIndividu(id);
+        return "Tugas Individu dengan ID : "+id+" telah dihapus";
     }
 
 
