@@ -67,7 +67,7 @@ public class AgentDServiceImpl implements AgentDService {
     public String tambahTugasIndividu (UserAgentD user, String nama, String desc, String deadline){
         String[] deadlineSplit = deadline.split("-");
         LocalDateTime deadlineDate = LocalDateTime.of(Integer.parseInt(deadlineSplit[2]), Integer.parseInt(deadlineSplit[1]), Integer.parseInt(deadlineSplit[0]),0,0);
-        TugasIndividu task = new TugasIndividu(nama, desc, deadlineDate, user.getId());
+        TugasIndividu task = new TugasIndividu(nama, desc, deadline, user.getId());
         tugasIndividuRepo.save(task);
         return task.getName()+" telah ditambahkan ke dalam daftar tugas individu kamu, "+user.getUserName();
     }
