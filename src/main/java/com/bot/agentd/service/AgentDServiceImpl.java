@@ -50,6 +50,7 @@ public class AgentDServiceImpl implements AgentDService {
                     default:
                         jawaban = tidakDikenal;
                 }
+                break;
             case ("lihat"):
                 switch (pesanSplit[1].toLowerCase()) {
                     case ("tugas individu"):
@@ -58,6 +59,7 @@ public class AgentDServiceImpl implements AgentDService {
                     default:
                         jawaban = tidakDikenal;
                 }
+                break;
             default:
                 jawaban = tidakDikenal;
         }
