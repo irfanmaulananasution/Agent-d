@@ -2,26 +2,39 @@ package com.bot.agentd.repository;
 
 import com.bot.agentd.core.UserAgentD;
 import org.springframework.stereotype.Repository;
-
-import java.util.HashMap;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 @Repository
-public class UserAgentDRepository implements UserAgentDRepo{
-    HashMap<String, UserAgentD> repository;
+public interface UserAgentDRepository extends JpaRepository<UserAgentD, String> {
+    @Query(value = "SELECT * FROM UserAgentD WHERE userId = ?1", nativeQuery = true)
+    UserAgentD findLineUserByUserId(String userID);
 
-    public UserAgentDRepository(){
-        repository = new HashMap<>();
-    }
+    @Query(value = "SELECT CASE WHEN COUNT(c) > 0 THEN true "
+            + "ELSE false END FROM UserAgentD c WHERE c.userId = ?1", nativeQuery = true)
+    boolean isUserRegistered(String userID);
 
-    public boolean isRegistered(String id){
-        return repository.containsKey(id);
-    }
-
-    public UserAgentD findUserById(String id){
-        return repository.get(id);
-    }
-
-    public void registerUser(String id, String uname){
-        repository.put(id, new UserAgentD(id, uname));
-    }
 }
+
+
+
+
+//public class UserAgentDRepository implements UserAgentDRepo{
+//    HashMap<String, UserAgentD> repository;
+//
+//    public UserAgentDRepository(){
+//        repository = new HashMap<>();
+//    }
+//
+//    public boolean isRegistered(String id){
+//        return repository.containsKey(id);
+//    }
+//
+//    public UserAgentD findUserById(String id){
+//        return repository.get(id);
+//    }
+//
+//    public void registerUser(String id, String uname){
+//        repository.put(id, new UserAgentD(id, uname));
+//    }
+

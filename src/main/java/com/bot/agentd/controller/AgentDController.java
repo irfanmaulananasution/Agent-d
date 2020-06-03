@@ -2,6 +2,7 @@ package com.bot.agentd.controller;
 
 import com.bot.agentd.core.UserAgentD;
 import com.bot.agentd.service.AgentDService;
+import com.bot.agentd.service.AgentDServiceImpl;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -51,7 +52,7 @@ public class AgentDController {
                     .replyMessage(new ReplyMessage(replyToken, jawabanDalamBentukTextMessage))
                     .get();
         } catch (InterruptedException | ExecutionException e) {
-            UserAgentD.log.log(Level.INFO, "Error while sending message");
+            AgentDServiceImpl.log.log(Level.INFO, "Error while sending message");
             Thread.currentThread().interrupt();
         }
     }
