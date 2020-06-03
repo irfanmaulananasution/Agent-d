@@ -1,13 +1,13 @@
 package com.bot.agentd.core;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public interface Tugas {
     String getName();
     void setName(String name);
     String getDesc();
     void setDesc(String desc);
-    LocalDate getDeadline();
-    void setDeadline(LocalDate date);
+    LocalDateTime getDeadline();
+    void setDeadline(LocalDateTime date);
 
 }
