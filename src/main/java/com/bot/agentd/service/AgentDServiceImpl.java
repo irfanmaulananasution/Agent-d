@@ -1,5 +1,6 @@
 package com.bot.agentd.service;
 
+import com.bot.agentd.core.Quotes;
 import com.bot.agentd.core.TugasIndividu;
 import com.bot.agentd.core.TugasKelompok;
 import com.bot.agentd.core.UserAgentD;
@@ -30,6 +31,8 @@ public class AgentDServiceImpl implements AgentDService {
 
     static String tidakDikenal = "Maaf, command tidak dikenali";
 
+    static Quotes qRepo;
+
     static LogManager lgmngr = LogManager.getLogManager();
     public static Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -46,49 +49,61 @@ public class AgentDServiceImpl implements AgentDService {
     public String periksaMessage(String id, String[] pesanSplit) {
         UserAgentD user = userRepo.findLineUserByUserId(id);
         String jawaban = "";
-        switch (pesanSplit[0].toLowerCase()) {
-            case ("tambah"):
-                switch (pesanSplit[1].toLowerCase()) {
-                    case ("tugas individu"):
-                        jawaban = this.tambahTugasIndividu(user, pesanSplit[2], pesanSplit[3], pesanSplit[4]);
-                        break;
-                    case("tugas kelompok"):
-                        jawaban = this.tambahTugasKelompok(user, pesanSplit[2], pesanSplit[3], pesanSplit[4], pesanSplit[5]);
-                        break;
-                    default:
-                        jawaban = tidakDikenal;
-                }
-                break;
-            case ("lihat"):
-                switch (pesanSplit[1].toLowerCase()) {
-                    case ("tugas individu"):
-                        jawaban = this.lihatTugasIndividu(user);
-                        break;
-                    case("tugas kelompok"):
-                        jawaban = this.lihatTugasKelompok(user);
-                        break;
-                    default:
-                        jawaban = tidakDikenal;
-                }
-                break;
-            case("remove"):
-                switch (pesanSplit[1].toLowerCase()) {
-                    case ("tugas individu"):
-                        jawaban = this.removeTugasIndividu(Long.parseLong(pesanSplit[2]));
-                        break;
-                    case("tugas kelompok"):
-                        jawaban = this.removeTugasKelompok(Long.parseLong(pesanSplit[2]));
-                        break;
-                    default:
-                        jawaban=tidakDikenal;
-                }
-                break;
-            case("cekId"):
-                jawaban = "Hai "+user.getUserName()+", id Agent-D kamu adalah "+user.getId();
-            default:
-                jawaban = tidakDikenal;
+        try {
+            switch (pesanSplit[0].toLowerCase()) {
+                case ("tambah"):
+                    switch (pesanSplit[1].toLowerCase()) {
+                        case ("tugas individu"):
+                            jawaban = this.tambahTugasIndividu(user, pesanSplit[2], pesanSplit[3], pesanSplit[4]);
+                            break;
+                        case ("tugas kelompok"):
+                            jawaban = this.tambahTugasKelompok(user, pesanSplit[2], pesanSplit[3], pesanSplit[4], pesanSplit[5]);
+                            break;
+                        default:
+                            jawaban = tidakDikenal;
+                    }
+                    break;
+                case ("lihat"):
+                    switch (pesanSplit[1].toLowerCase()) {
+                        case ("tugas individu"):
+                            jawaban = this.lihatTugasIndividu(user);
+                            break;
+                        case ("tugas kelompok"):
+                            jawaban = this.lihatTugasKelompok(user);
+                            break;
+                        default:
+                            jawaban = tidakDikenal;
+                    }
+                    break;
+                case ("remove"):
+                    switch (pesanSplit[1].toLowerCase()) {
+                        case ("tugas individu"):
+                            jawaban = this.removeTugasIndividu(Long.parseLong(pesanSplit[2]));
+                            break;
+                        case ("tugas kelompok"):
+                            jawaban = this.removeTugasKelompok(Long.parseLong(pesanSplit[2]));
+                            break;
+                        default:
+                            jawaban = tidakDikenal;
+                    }
+                    break;
+                case ("cekid"):
+                    jawaban = "Hai " + user.getUserName() + ", id Agent-D kamu adalah " + user.getId();
+                    break;
+                case ("quote"):
+                    if (!qRepo.isInitiated()) {
+                        qRepo.repoInitiation();
+                    }
+                    jawaban = qRepo.getQuote();
+                    break;
+                default:
+                    jawaban = tidakDikenal;
+            }
+            return jawaban;
+        }catch (Exception e){
+            log.log(Level.INFO, "Error Happens in quote initiating");
+            return "Error Occured while initiating Quotes.";
         }
-        return jawaban;
     }
 
     public String tambahTugasIndividu (UserAgentD user, String nama, String desc, String deadline){
