@@ -20,7 +20,7 @@ public class Jadwal{
     @Column(name = "timeStart")
     private String timeStart;
 
-    @Column(name = "timeStart")
+    @Column(name = "timeEnd")
     private String timeEnd;
 
     @Column(name = "ownerId")
