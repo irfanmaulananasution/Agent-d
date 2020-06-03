@@ -14,8 +14,8 @@ public class TugasIndividu{
     @Column(name = "name")
     private String name;
 
-    @Column(name = "desc")
-    private String desc;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "deadline")
     private String deadline;
@@ -29,7 +29,7 @@ public class TugasIndividu{
 
     public TugasIndividu(String nama, String desc, String deadline, String ownerId){
         this.name = nama;
-        this.desc = desc;
+        this.description = desc;
         this.deadline = deadline;
         this.ownerId = ownerId;
     }
@@ -39,7 +39,7 @@ public class TugasIndividu{
     }
 
     public void setDesc(String desc){
-        this.desc = desc;
+        this.description = desc;
     }
 
     public void setDeadline(String date){
@@ -59,7 +59,7 @@ public class TugasIndividu{
     }
 
     public String getDesc(){
-        return this.desc;
+        return this.description;
     }
 
     public String getDeadline(){
