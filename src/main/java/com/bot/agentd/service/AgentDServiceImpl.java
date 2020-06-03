@@ -1,8 +1,10 @@
 package com.bot.agentd.service;
 
 import com.bot.agentd.core.TugasIndividu;
+import com.bot.agentd.core.TugasKelompok;
 import com.bot.agentd.core.UserAgentD;
 import com.bot.agentd.repository.TugasIndividuRepository;
+import com.bot.agentd.repository.TugasKelompokRepository;
 import com.bot.agentd.repository.UserAgentDRepository;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class AgentDServiceImpl implements AgentDService {
 
     @Autowired
     private TugasIndividuRepository tugasIndividuRepo;
+
+    @Autowired
+    private TugasKelompokRepository tugasKelompokRepo;
 
     static String tidakDikenal = "Maaf, command tidak dikenali";
 
@@ -47,6 +52,9 @@ public class AgentDServiceImpl implements AgentDService {
                     case ("tugas individu"):
                         jawaban = this.tambahTugasIndividu(user, pesanSplit[2], pesanSplit[3], pesanSplit[4]);
                         break;
+                    case("tugas kelompok"):
+                        jawaban = this.tambahTugasKelompok(user, pesanSplit[2], pesanSplit[3], pesanSplit[4], pesanSplit[5]);
+                        break;
                     default:
                         jawaban = tidakDikenal;
                 }
@@ -56,15 +64,27 @@ public class AgentDServiceImpl implements AgentDService {
                     case ("tugas individu"):
                         jawaban = this.lihatTugasIndividu(user);
                         break;
+                    case("tugas kelompok"):
+                        jawaban = this.lihatTugasKelompok(user);
+                        break;
                     default:
                         jawaban = tidakDikenal;
                 }
                 break;
             case("remove"):
-                switch (pesanSplit[1].toLowerCase()){
+                switch (pesanSplit[1].toLowerCase()) {
                     case ("tugas individu"):
                         jawaban = this.removeTugasIndividu(Long.parseLong(pesanSplit[2]));
+                        break;
+                    case("tugas kelompok"):
+                        jawaban = this.removeTugasKelompok(Long.parseLong(pesanSplit[2]));
+                        break;
+                    default:
+                        jawaban=tidakDikenal;
                 }
+                break;
+            case("cekId"):
+                jawaban = "Hai "+user.getUserName()+", id Agent-D kamu adalah "+user.getId();
             default:
                 jawaban = tidakDikenal;
         }
@@ -72,8 +92,6 @@ public class AgentDServiceImpl implements AgentDService {
     }
 
     public String tambahTugasIndividu (UserAgentD user, String nama, String desc, String deadline){
-        String[] deadlineSplit = deadline.split("-");
-        LocalDateTime deadlineDate = LocalDateTime.of(Integer.parseInt(deadlineSplit[2]), Integer.parseInt(deadlineSplit[1]), Integer.parseInt(deadlineSplit[0]),0,0);
         TugasIndividu task = new TugasIndividu(nama, desc, deadline, user.getId());
         tugasIndividuRepo.save(task);
         return task.getName()+" telah ditambahkan ke dalam daftar tugas individu kamu, "+user.getUserName();
@@ -96,8 +114,28 @@ public class AgentDServiceImpl implements AgentDService {
         return "Tugas Individu dengan ID : "+id+" telah dihapus";
     }
 
+    public String tambahTugasKelompok(UserAgentD user, String nama, String desc, String deadline, String anggota){
+        TugasKelompok task = new TugasKelompok(nama, desc, deadline, anggota, user.getId());
+        tugasKelompokRepo.save(task);
+        return task.getName()+" telah ditambahkan ke dalam daftar tugas kelompok kamu, "+user.getUserName();
+    }
+    public String lihatTugasKelompok(UserAgentD user){
+        List<TugasKelompok> tasks = tugasKelompokRepo.fetchTugasKelompok(user.getId());
+        String jawaban = "";
+        for(TugasKelompok task :tasks) {
+            jawaban += "id tugas : " + task.getId() + "\n";
+            jawaban += "nama tugas : " + task.getName() + "\n";
+            jawaban += "deskripsi : " + task.getDesc() + "\n";
+            jawaban += "deadline : " + task.getDeadline() + "\n";
+            jawaban += "daftar anggota : " + task.getDaftarAnggota() + "\n\n";
+        }
+        return jawaban;
+    }
 
-
+    public String removeTugasKelompok(long id){
+        tugasKelompokRepo.deleteTugasKelompok(id);
+        return "Tugas Kelompok dengan ID : "+id+" telah dihapus";
+    }
 
 //    UserAgentDRepository repository;
 //    String tidakDikenal = "Command Tidak Dikenali";

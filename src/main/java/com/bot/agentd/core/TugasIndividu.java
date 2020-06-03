@@ -1,8 +1,6 @@
 package com.bot.agentd.core;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tugas_individu")
@@ -65,7 +63,6 @@ public class TugasIndividu{
     public String getDeadline(){
         return this.deadline;
     }
-    //test
 }
 
 //public class TugasIndividu implements Tugas {
