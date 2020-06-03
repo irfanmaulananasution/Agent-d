@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 
 @Repository
 public interface UserAgentDRepository extends JpaRepository<UserAgentD, String> {
-    @Query(value = "SELECT * FROM UserAgentD WHERE userId = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM user_agentd WHERE userId = ?1", nativeQuery = true)
     UserAgentD findLineUserByUserId(String userID);
 
     @Query(value = "SELECT CASE WHEN COUNT(c) > 0 THEN true "
-            + "ELSE false END FROM UserAgentD c WHERE c.userId = ?1", nativeQuery = true)
+            + "ELSE false END FROM user_agentd c WHERE c.userId = ?1", nativeQuery = true)
     boolean isUserRegistered(String userID);
 
 }
