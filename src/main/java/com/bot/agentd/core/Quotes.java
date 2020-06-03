@@ -10,12 +10,12 @@ public class Quotes {
     static int quotesRepoIndexPointer;
     int repoSize;
 
-    Quotes() {
+    public Quotes() {
         this.quotesRepoIndexPointer = 0;
         this.repoSize = 0;
     }
 
-    public void repoInitiation() throws Exception {
+    public void repoInitiation() throws Exception{
         ArrayList<String> quotesRepo = new ArrayList<String>();
 
         try {

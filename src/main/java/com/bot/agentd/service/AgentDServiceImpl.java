@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+
 @Service
 public class AgentDServiceImpl implements AgentDService {
     @Autowired
@@ -31,7 +32,7 @@ public class AgentDServiceImpl implements AgentDService {
 
     static String tidakDikenal = "Maaf, command tidak dikenali";
 
-    static Quotes qRepo;
+    static Quotes qRepo = new Quotes();
 
     static LogManager lgmngr = LogManager.getLogManager();
     public static Logger log = lgmngr.getLogger(Logger.GLOBAL_LOGGER_NAME);
