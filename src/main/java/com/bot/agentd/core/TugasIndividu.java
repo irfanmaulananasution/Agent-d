@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "tugas_individu")
-public class TugasIndividu implements Tugas {
+public class TugasIndividu{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -29,7 +29,7 @@ public class TugasIndividu implements Tugas {
     public TugasIndividu(String nama, String desc, LocalDate deadline, String ownerId){
         this.name = nama;
         this.desc = desc;
-        this.deadline = deadline;
+        setDeadline(deadline);
         this.ownerId = ownerId;
     }
 
