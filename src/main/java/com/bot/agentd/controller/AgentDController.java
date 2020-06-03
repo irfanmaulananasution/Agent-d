@@ -1,6 +1,5 @@
 package com.bot.agentd.controller;
 
-import com.bot.agentd.core.UserAgentD;
 import com.bot.agentd.service.AgentDService;
 import com.bot.agentd.service.AgentDServiceImpl;
 import com.linecorp.bot.client.LineMessagingClient;

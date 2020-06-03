@@ -18,6 +18,6 @@ public interface TugasIndividuRepository extends JpaRepository<TugasIndividu, Lo
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM TugasIndividu s WHERE s.id = :id")
-    void deleteTugasIndividy(@Param("id") String id);
+    void deleteTugasIndividu(@Param("id") Long id);
 
 }
