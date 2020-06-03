@@ -178,7 +178,7 @@ public class AgentDServiceImpl implements AgentDService {
             String day = jadwalSekarang.getDay();
             String timeStart = jadwalSekarang.getTimeStart();
             String  timeEnd = jadwalSekarang.getTimeEnd();
-            jawaban += name + " " + day + " " + timeStart + " - " + timeEnd + "\n";
+            jawaban += jadwalSekarang.getId()+" "+name + " " + day + " " + timeStart + " - " + timeEnd + "\n\n";
         }
         return jawaban;
     }
