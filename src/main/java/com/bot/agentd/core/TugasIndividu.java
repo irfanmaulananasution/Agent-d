@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Table(name = "tugas_individu")
 public class TugasIndividu implements Tugas {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(name = "name")
