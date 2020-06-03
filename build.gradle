@@ -6,6 +6,7 @@ plugins {
 }
 
 apply plugin: 'jacoco'
+apply plugin: 'io.spring.dependency-management'
 
 group = 'com.bot'
 version = '0.0.1-SNAPSHOT'
