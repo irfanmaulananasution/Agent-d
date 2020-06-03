@@ -52,8 +52,8 @@ build:
 Deployment:
   image: ruby:2.4
   stage: deploy
-#  only:
-#    - master
+  only:
+    - master
   before_script:
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
