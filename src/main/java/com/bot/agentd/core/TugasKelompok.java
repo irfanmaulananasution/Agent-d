@@ -37,7 +37,7 @@ public class TugasKelompok {
         this.description = desc;
         this.deadline = deadline;
         this.ownerId = owner.getId();
-        this.daftarAnggota+=this.ownerId+" ";
+        this.daftarAnggota=this.ownerId+" ";
     }
 
     public void setName(String name){
