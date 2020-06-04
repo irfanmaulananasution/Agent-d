@@ -172,6 +172,7 @@ public class AgentDServiceImpl implements AgentDService {
             else
                 listAnggota+= username+".";
         }
+        return listAnggota;
     }
     public String removeTugasKelompok(long id){
         tugasKelompokRepo.deleteTugasKelompok(id);
