@@ -56,7 +56,7 @@ public class AgentDServiceImpl implements AgentDService {
                             jawaban = this.tambahTugasIndividu(user, pesanSplit[2], pesanSplit[3], pesanSplit[4]);
                             break;
                         case ("tugas kelompok"):
-                            jawaban = this.tambahTugasKelompok(user, pesanSplit[2], pesanSplit[3], pesanSplit[4], pesanSplit[5]);
+                            jawaban = this.tambahTugasKelompok(user, pesanSplit[2], pesanSplit[3], pesanSplit[4]);
                             break;
                         case ("jadwal"):
                             String name = pesanSplit[2];
@@ -141,8 +141,8 @@ public class AgentDServiceImpl implements AgentDService {
         return "Tugas Individu dengan ID : "+id+" telah dihapus";
     }
 
-    public String tambahTugasKelompok(UserAgentD user, String nama, String desc, String deadline, String anggota){
-        TugasKelompok task = new TugasKelompok(nama, desc, deadline, anggota, user.getId());
+    public String tambahTugasKelompok(UserAgentD user, String nama, String desc, String deadline){
+        TugasKelompok task = new TugasKelompok(nama, desc, deadline, user);
         tugasKelompokRepo.save(task);
         return task.getName()+" telah ditambahkan ke dalam daftar tugas kelompok kamu, "+user.getUserName();
     }
@@ -150,11 +150,12 @@ public class AgentDServiceImpl implements AgentDService {
         List<TugasKelompok> tasks = tugasKelompokRepo.fetchTugasKelompok(user.getId());
         String jawaban = "";
         for(TugasKelompok task :tasks) {
+
             jawaban += "id tugas : " + task.getId() + "\n";
             jawaban += "nama tugas : " + task.getName() + "\n";
             jawaban += "deskripsi : " + task.getDesc() + "\n";
             jawaban += "deadline : " + task.getDeadline() + "\n";
-            jawaban += "daftar anggota : " + task.getDaftarAnggota() + "\n\n";
+            jawaban += "daftar anggota : " + task.getDaftarAnggotaString() + "\n\n";
         }
         return jawaban;
     }

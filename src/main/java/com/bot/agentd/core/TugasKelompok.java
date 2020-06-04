@@ -2,6 +2,7 @@ package com.bot.agentd.core;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -21,7 +22,7 @@ public class TugasKelompok {
     private String deadline;
 
     @Column(name = "daftar_anggota")
-    private String daftarAnggota;
+    private List<UserAgentD> daftarAnggota;
 
     @Column(name = "ownerId")
     private String ownerId;
@@ -30,12 +31,12 @@ public class TugasKelompok {
 
     }
 
-    public TugasKelompok(String nama, String desc, String deadline,String daftarAnggota, String ownerId){
+    public TugasKelompok(String nama, String desc, String deadline,UserAgentD owner){
         this.name = nama;
         this.description = desc;
         this.deadline = deadline;
-        this.daftarAnggota = daftarAnggota;
-        this.ownerId = ownerId;
+        this.ownerId = owner.getId();
+        this.daftarAnggota.add(owner);
     }
 
     public void setName(String name){
@@ -70,6 +71,26 @@ public class TugasKelompok {
         return this.deadline;
     }
 
-    public String getDaftarAnggota(){ return this.daftarAnggota; }
+    public String getDaftarAnggotaString(){
+        String listAnggota="";
+        for(int iteratorAnggota = 0; iteratorAnggota < daftarAnggota.size(); iteratorAnggota++){
+            if(iteratorAnggota !=daftarAnggota.size()-1)
+                listAnggota+=daftarAnggota.get(iteratorAnggota).getUserName()+", ";
+            else
+                listAnggota+=daftarAnggota.get(iteratorAnggota).getUserName()+".";
+        }
+
+    }
+
+
+
+    public void addAnggota(UserAgentD anggota){
+        if(!this.daftarAnggota.contains(anggota))
+            this.daftarAnggota.add(anggota);
+    }
+    public void removeAnggota(UserAgentD anggota){
+        if(this.daftarAnggota.contains(anggota))
+            this.daftarAnggota.remove(anggota)
+    }
 
 }
