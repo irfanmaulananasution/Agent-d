@@ -2,6 +2,7 @@ package com.bot.agentd.core;
 
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -22,7 +23,7 @@ public class TugasKelompok {
     private String deadline;
 
     @Column(name = "daftar_anggota")
-    private List<UserAgentD> daftarAnggota;
+    private String daftarAnggota;
 
     @Column(name = "ownerId")
     private String ownerId;
@@ -36,7 +37,7 @@ public class TugasKelompok {
         this.description = desc;
         this.deadline = deadline;
         this.ownerId = owner.getId();
-        this.daftarAnggota.add(owner);
+        this.daftarAnggota+=this.ownerId+" ";
     }
 
     public void setName(String name){
@@ -71,26 +72,27 @@ public class TugasKelompok {
         return this.deadline;
     }
 
-    public String getDaftarAnggotaString(){
-        String listAnggota="";
-        for(int iteratorAnggota = 0; iteratorAnggota < daftarAnggota.size(); iteratorAnggota++){
-            if(iteratorAnggota !=daftarAnggota.size()-1)
-                listAnggota+=daftarAnggota.get(iteratorAnggota).getUserName()+", ";
-            else
-                listAnggota+=daftarAnggota.get(iteratorAnggota).getUserName()+".";
-        }
-        return listAnggota;
+    public String getDaftarAnggota(){
+        return this.daftarAnggota;
     }
 
 
 
     public void addAnggota(UserAgentD anggota){
-        if(!this.daftarAnggota.contains(anggota))
-            this.daftarAnggota.add(anggota);
+        List<String> listAnggota = Arrays.asList(this.daftarAnggota.split(" "));
+        if(!listAnggota.contains(anggota.getId()))
+            this.daftarAnggota+=anggota.getId()+" ";
+
     }
-    public void removeAnggota(UserAgentD anggota){
-        if(this.daftarAnggota.contains(anggota))
-            this.daftarAnggota.remove(anggota);
+    public void removeAnggota(UserAgentD anggota) {
+        List<String> listAnggota = Arrays.asList(this.daftarAnggota.split(" "));
+        if (listAnggota.contains(anggota.getId())) {
+            listAnggota.remove(anggota.getId());
+        }
+        this.daftarAnggota="";
+        for(int iteratorAnggota = 0; iteratorAnggota < listAnggota.size(); iteratorAnggota++){
+            daftarAnggota+=listAnggota.get(iteratorAnggota)+" ";
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import com.bot.agentd.repository.UserAgentDRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -155,11 +156,23 @@ public class AgentDServiceImpl implements AgentDService {
             jawaban += "nama tugas : " + task.getName() + "\n";
             jawaban += "deskripsi : " + task.getDesc() + "\n";
             jawaban += "deadline : " + task.getDeadline() + "\n";
-            jawaban += "daftar anggota : " + task.getDaftarAnggotaString() + "\n\n";
+            jawaban += "daftar anggota : " + getDaftarAnggotaUserName(task.getDaftarAnggota()) + "\n\n";
         }
         return jawaban;
     }
 
+    public String getDaftarAnggotaUserName(String daftarAnggota){
+        String listAnggota = "";
+        List<String> daftarAnggotaList = Arrays.asList(daftarAnggota.split(" "));
+        for(int i=0;i<daftarAnggotaList.size();i++){
+            String anggotaID = daftarAnggotaList.get(i);
+            String username = userRepo.findLineUserByUserId(anggotaID).getUserName();
+            if(i<daftarAnggotaList.size()-1)
+                listAnggota+= username+", ";
+            else
+                listAnggota+= username+".";
+        }
+    }
     public String removeTugasKelompok(long id){
         tugasKelompokRepo.deleteTugasKelompok(id);
         return "Tugas Kelompok dengan ID : "+id+" telah dihapus";
