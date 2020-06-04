@@ -156,7 +156,7 @@ public class AgentDServiceImpl implements AgentDService {
             jawaban += "nama tugas : " + task.getName() + "\n";
             jawaban += "deskripsi : " + task.getDesc() + "\n";
             jawaban += "deadline : " + task.getDeadline() + "\n";
-            jawaban += "daftar anggota : " + getDaftarAnggotaUserName(task.getDaftarAnggota()) + "\n\n";
+            jawaban += "daftar anggota : " + task.getDaftarAnggota() + "\n\n";
         }
         return jawaban;
     }
