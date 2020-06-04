@@ -79,7 +79,7 @@ public class TugasKelompok {
             else
                 listAnggota+=daftarAnggota.get(iteratorAnggota).getUserName()+".";
         }
-
+        return listAnggota;
     }
 
 
@@ -90,7 +90,7 @@ public class TugasKelompok {
     }
     public void removeAnggota(UserAgentD anggota){
         if(this.daftarAnggota.contains(anggota))
-            this.daftarAnggota.remove(anggota)
+            this.daftarAnggota.remove(anggota);
     }
 
 }
