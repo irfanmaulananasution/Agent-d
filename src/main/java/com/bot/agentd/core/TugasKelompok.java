@@ -23,7 +23,7 @@ public class TugasKelompok {
     private String deadline;
 
     @Column(name = "daftar_anggota")
-    private String daftarAnggota;
+    private String daftarAnggota="";
 
     @Column(name = "ownerId")
     private String ownerId;
