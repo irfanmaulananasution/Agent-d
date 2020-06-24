@@ -184,7 +184,18 @@ public class AgentDServiceImpl implements AgentDService {
     }
 
     public String remindTugasKelompok(long id, UserAgentD user, AgentDController controller){
-        return "test";
+        TugasKelompok tk = tugasKelompokRepo.findById(id).get();
+        String[] daftarAnggota = tk.getDaftarAnggota().split(" ");
+        String message = ""+ user.getUserName() +" mau ngingetin jangan lupa untuk mengerjakan tugas kelompok "+tk.getName()+" dengan deadline "+tk.getDeadline()+"!";
+        for(int i = 0;i<daftarAnggota.length;i++){
+            if(!daftarAnggota[i].equals(user.getId())) {
+                UserAgentD pengguna = userRepo.findById(daftarAnggota[i]).get();
+                String reminder = "[REMINDER!!] Halo " + pengguna.getUserName() + ", ";
+                reminder += message;
+                controller.handlePushEvent(daftarAnggota[i], reminder);
+            }
+        }
+        return "Kamu telah melakukan reminder kepada semua anggota tugas kelompok id "+id;
     }
 
     public String joinTugasKelompok(long id, UserAgentD user){
