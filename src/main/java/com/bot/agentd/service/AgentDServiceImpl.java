@@ -6,6 +6,7 @@ import com.bot.agentd.repository.JadwalRepository;
 import com.bot.agentd.repository.TugasIndividuRepository;
 import com.bot.agentd.repository.TugasKelompokRepository;
 import com.bot.agentd.repository.UserAgentDRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,9 +111,12 @@ public class AgentDServiceImpl implements AgentDService {
                     }
                     jawaban = qRepo.getQuote();
                     break;
-                case ("join tugas kelompok"):
+                case ("join tk"):
                     jawaban = this.joinTugasKelompok(Long.parseLong(pesanSplit[1]), user);
                     break;
+//                case("remind tk"):
+//                    jawaban = this.remindTugasKelompok(Long.parseLong(pesanSplit[1]), user);
+//                    break;
                 default:
                     jawaban = tidakDikenal;
             }
@@ -179,9 +183,14 @@ public class AgentDServiceImpl implements AgentDService {
         return listAnggota;
     }
 
+//    public void remindTugasKelompok(long id, UserAgentD user, AgentDController controller){
+//
+//    }
+
     public String joinTugasKelompok(long id, UserAgentD user){
         TugasKelompok tk = tugasKelompokRepo.findById(id).get();
         tk.setDaftarAnggota(user.getId());
+        tugasKelompokRepo.save(tk);
         return "Selamat, kamu telah join menjadi anggota tugas kelompok dengan id "+id;
     }
 
