@@ -114,9 +114,9 @@ public class AgentDServiceImpl implements AgentDService {
                 case ("join tk"):
                     jawaban = this.joinTugasKelompok(Long.parseLong(pesanSplit[1]), user);
                     break;
-//                case("remind tk"):
-//                    jawaban = this.remindTugasKelompok(Long.parseLong(pesanSplit[1]), user);
-//                    break;
+                case("remind tk"):
+                    jawaban = this.remindTugasKelompok(Long.parseLong(pesanSplit[1]), user, controller);
+                    break;
                 default:
                     jawaban = tidakDikenal;
             }
@@ -183,9 +183,9 @@ public class AgentDServiceImpl implements AgentDService {
         return listAnggota;
     }
 
-//    public void remindTugasKelompok(long id, UserAgentD user, AgentDController controller){
-//
-//    }
+    public String remindTugasKelompok(long id, UserAgentD user, AgentDController controller){
+        return "test";
+    }
 
     public String joinTugasKelompok(long id, UserAgentD user){
         TugasKelompok tk = tugasKelompokRepo.findById(id).get();
