@@ -1,5 +1,6 @@
 package com.bot.agentd.service;
 
+import com.bot.agentd.controller.AgentDController;
 import com.bot.agentd.core.*;
 import com.bot.agentd.repository.JadwalRepository;
 import com.bot.agentd.repository.TugasIndividuRepository;
@@ -29,7 +30,7 @@ public class AgentDServiceImpl implements AgentDService {
     @Autowired
     private JadwalRepository jadwalRepo;
 
-    static String tidakDikenal = "Maaf, command tidak dikenali";
+    static String tidakDikenal = "Maaf, command tidak dikenali.\nKetik 'help' untuk mengetahui command yang tersedia";
 
     static Quotes qRepo = new Quotes();
 
@@ -46,7 +47,7 @@ public class AgentDServiceImpl implements AgentDService {
         userRepo.save(newUser);
     }
 
-    public String periksaMessage(String id, String[] pesanSplit) {
+    public String periksaMessage(String id, String[] pesanSplit, AgentDController controller) {
         UserAgentD user = userRepo.findLineUserByUserId(id);
         String jawaban = "";
         try {
@@ -109,8 +110,33 @@ public class AgentDServiceImpl implements AgentDService {
                     }
                     jawaban = qRepo.getQuote();
                     break;
-                case ("join tugas kelompok"):
+                case ("join tk"):
                     jawaban = this.joinTugasKelompok(Long.parseLong(pesanSplit[1]), user);
+                    break;
+                case("remind tk"):
+                    jawaban = this.remindTugasKelompok(Long.parseLong(pesanSplit[1]), user, controller);
+                    break;
+                case("help"):
+                    if(pesanSplit.length==1) {
+                        jawaban = this.help();
+                    }else{
+                        switch (pesanSplit[1]){
+                            case ("tugas individu"):
+                                jawaban = this.helpTI();
+                                break;
+                            case("tugas kelompok"):
+                                jawaban = this.helpTK();
+                                break;
+                            case("jadwal"):
+                                jawaban = this.helpJadwal();
+                                break;
+                            case("others"):
+                                jawaban = this.helpOther();
+                                break;
+                            default:
+                                jawaban = tidakDikenal;
+                        }
+                    }
                     break;
                 default:
                     jawaban = tidakDikenal;
@@ -118,8 +144,56 @@ public class AgentDServiceImpl implements AgentDService {
             return jawaban;
         }catch (Exception e){
             log.log(Level.INFO, "Error Happens in quote initiating");
-            return "Error Occured while initiating Quotes.";
+            return "Error, Something happened";
         }
+    }
+
+    public String help(){
+        String jawaban = "Halo, selamat datang di Agent-D! Untuk memanfaatkan Agent-D, gunakan command-command berikut :\n\n";
+        jawaban += "untuk mengetahui command tugas individu, kirim help/tugas individu\n";
+        jawaban += "untuk mengetahui command tugas kelompok, kirim help/tugas kelompok\n";
+        jawaban += "untuk mengetahui command jadwal mingguan, kirim help/jadwal\n";
+        jawaban += "untuk mengetahui command lain, kirim help/others\n";
+        jawaban+="\nSemoga bermanfaat!";
+        return jawaban;
+    }
+
+    public String helpTI(){
+        String jawaban = "Berikut adalah command yang berhubungan dengan tugas individu: \n\n";
+        jawaban+="tambah/tugas individu/<nama tugas>/<deskripsi tugas>/<deadline tugas> => menambahkan tugas individu\n";
+        jawaban+="lihat/tugas individu => melihat daftar tugas individu yang terdaftar oleh kamu\n";
+        jawaban+="remove/tugas individu/<id tugas> => menghapus tugas individu sesuai id yang terdaftar\n";
+        jawaban+="\nSemoga bermanfaat!";
+        return jawaban;
+    }
+
+    public String helpTK(){
+        String jawaban = "Berikut adalah command yang berhubungan dengan tugas kelompok : \n\n";
+        jawaban+="tambah/tugas kelompok/<nama tugas>/<deskripsi tugas>/<deadline tugas> => menambahkan tugas kelompok\n";
+        jawaban+="lihat/tugas kelompok => melihat daftar tugas kelompok dimana kamu adalah anggota\n";
+        jawaban+="remove/tugas kelompok/<id tugas> => menghapus tugas kelompok sesuai id yang terdaftar\n";
+        jawaban+="join tk/<id tugas> => mendaftarkan diri menjadi anggota tugas kelompok dengan id tertentu\n";
+        jawaban+="remind tk/<id tugas> => mengingatkan semua anggota kelompok dalam tugas tersebut agar mengerjakan tugas\n";
+        jawaban+="\nSemoga bermanfaat!";
+        return jawaban;
+    }
+
+    public String helpJadwal(){
+        String jawaban = "Berikut adalah command yang berhubungan dengan jadwal mingguan : \n\n";
+        jawaban+="tambah/jadwal/<nama jadwal>/<hari jadwal>/<waktu mulai>/<waktu selesai> => menambahkan jadwal mingguan\n";
+        jawaban+="lihat/jadwal => melihat daftar jadwal mingguan yang terdaftar oleh kamu\n";
+        jawaban+="remove/jadwal/<id jadwal> => menghapus jadwal mingguan sesuai id yang terdaftar\n";
+        jawaban+="\nSemoga bermanfaat!";
+        return jawaban;
+    }
+
+    public String helpOther(){
+        String jawaban = "Berikut adalah command yang dapat dijalankan di Agent-D : \n\n";
+        jawaban+="cekid => memeriksa id kamu yang terdaftar saat menjadi user Agent-D\n";
+        jawaban+="quote => mendapatkan quotes pilihan untuk menyemangati harimu\n";
+        jawaban+="help => mendapatkan bantuan penggunaan Agent-D\n";
+        jawaban+="\nSemoga bermanfaat!";
+        return jawaban;
     }
 
     public String tambahTugasIndividu (UserAgentD user, String nama, String desc, String deadline){
@@ -178,9 +252,25 @@ public class AgentDServiceImpl implements AgentDService {
         return listAnggota;
     }
 
+    public String remindTugasKelompok(long id, UserAgentD user, AgentDController controller){
+        TugasKelompok tk = tugasKelompokRepo.findById(id).get();
+        String[] daftarAnggota = tk.getDaftarAnggota().split(" ");
+        String message = ""+ user.getUserName() +" mau ngingetin jangan lupa untuk mengerjakan tugas kelompok "+tk.getName()+" dengan deadline "+tk.getDeadline()+"!";
+        for(int i = 0;i<daftarAnggota.length;i++){
+            if(!daftarAnggota[i].equals(user.getId())) {
+                UserAgentD pengguna = userRepo.findById(daftarAnggota[i]).get();
+                String reminder = "[REMINDER!!] Halo " + pengguna.getUserName() + ", ";
+                reminder += message;
+                controller.handlePushEvent(daftarAnggota[i], reminder);
+            }
+        }
+        return "Kamu telah melakukan reminder kepada semua anggota tugas kelompok id "+id;
+    }
+
     public String joinTugasKelompok(long id, UserAgentD user){
         TugasKelompok tk = tugasKelompokRepo.findById(id).get();
-        tk.addAnggota(user);
+        tk.setDaftarAnggota(user.getId());
+        tugasKelompokRepo.save(tk);
         return "Selamat, kamu telah join menjadi anggota tugas kelompok dengan id "+id;
     }
 

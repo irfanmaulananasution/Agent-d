@@ -52,6 +52,10 @@ public class TugasKelompok {
         this.deadline = date;
     }
 
+    public void setDaftarAnggota(String daftarAnggota) {
+        this.daftarAnggota = addAnggota(daftarAnggota);
+    }
+
     public long getId(){
         return this.id;
     }
@@ -78,10 +82,13 @@ public class TugasKelompok {
 
 
 
-    public void addAnggota(UserAgentD anggota){
+    public String addAnggota(String anggota){
         List<String> listAnggota = Arrays.asList(this.daftarAnggota.split(" "));
-        if(!listAnggota.contains(anggota.getId()))
-            this.daftarAnggota+=anggota.getId()+" ";
+        String anggotaStr = this.daftarAnggota;
+        if(!listAnggota.contains(anggota))
+            anggotaStr+=anggota+" ";
+
+        return anggotaStr;
 
     }
     public void removeAnggota(UserAgentD anggota) {

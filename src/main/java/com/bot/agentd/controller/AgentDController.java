@@ -3,9 +3,11 @@ package com.bot.agentd.controller;
 import com.bot.agentd.service.AgentDService;
 import com.bot.agentd.service.AgentDServiceImpl;
 import com.linecorp.bot.client.LineMessagingClient;
+import com.linecorp.bot.model.PushMessage;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -35,7 +37,7 @@ public class AgentDController {
             if(!agentDService.isUserRegistered(userId)) {
                 agentDService.registerUser(userId, userName);
             }
-            String jawaban = agentDService.periksaMessage(userId,pesanSplit);
+            String jawaban = agentDService.periksaMessage(userId,pesanSplit, this);
 
             String replyToken = messageEvent.getReplyToken();
             replyText(replyToken, jawaban);
@@ -55,4 +57,38 @@ public class AgentDController {
             Thread.currentThread().interrupt();
         }
     }
+
+    /**
+     * Handle push message for reminder notification.
+     *
+     * @param userID  User identifier.
+     * @param message Message that will be send to User.
+     */
+    public void handlePushEvent(String userID, String message) {
+        TextMessage jawabanDalamBentukTextMessage = new TextMessage(message);
+        try {
+            lineMessagingClient
+                    .pushMessage(new PushMessage(userID, jawabanDalamBentukTextMessage))
+                    .get();
+        } catch (NullPointerException | InterruptedException | ExecutionException e) {
+            System.out.print("Error found, please try again\n");
+        }
+    }
+
+    /**
+     * Handle push message for reminder notification with Template Message.
+     *
+     * @param userID  User identifier.
+     * @param message Message that will be send to User.
+     */
+    public void handlePushEventTemplateMessage(String userID, TemplateMessage message) {
+        try {
+            lineMessagingClient
+                    .pushMessage(new PushMessage(userID, message))
+                    .get();
+        } catch (NullPointerException | InterruptedException | ExecutionException e) {
+            System.out.print("Error found, please try again\n");
+        }
+    }
+
 }
