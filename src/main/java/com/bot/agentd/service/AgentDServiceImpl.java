@@ -109,6 +109,9 @@ public class AgentDServiceImpl implements AgentDService {
                     }
                     jawaban = qRepo.getQuote();
                     break;
+                case ("join tugas kelompok"):
+                    jawaban = this.joinTugasKelompok(Long.parseLong(pesanSplit[1]), user);
+                    break;
                 default:
                     jawaban = tidakDikenal;
             }
@@ -174,6 +177,13 @@ public class AgentDServiceImpl implements AgentDService {
         }
         return listAnggota;
     }
+
+    public String joinTugasKelompok(long id, UserAgentD user){
+        TugasKelompok tk = tugasKelompokRepo.findById(id).get();
+        tk.addAnggota(user);
+        return "Selamat, kamu telah join menjadi anggota tugas kelompok dengan id "+id;
+    }
+
     public String removeTugasKelompok(long id){
         tugasKelompokRepo.deleteTugasKelompok(id);
         return "Tugas Kelompok dengan ID : "+id+" telah dihapus";
