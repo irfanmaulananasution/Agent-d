@@ -1,5 +1,6 @@
 package com.bot.agentd.service;
 
+import com.bot.agentd.controller.AgentDController;
 import com.bot.agentd.core.*;
 import com.bot.agentd.repository.JadwalRepository;
 import com.bot.agentd.repository.TugasIndividuRepository;
@@ -46,7 +47,7 @@ public class AgentDServiceImpl implements AgentDService {
         userRepo.save(newUser);
     }
 
-    public String periksaMessage(String id, String[] pesanSplit) {
+    public String periksaMessage(String id, String[] pesanSplit, AgentDController controller) {
         UserAgentD user = userRepo.findLineUserByUserId(id);
         String jawaban = "";
         try {
@@ -180,7 +181,7 @@ public class AgentDServiceImpl implements AgentDService {
 
     public String joinTugasKelompok(long id, UserAgentD user){
         TugasKelompok tk = tugasKelompokRepo.findById(id).get();
-        tk.addAnggota(user);
+        tk.setDaftarAnggota(user.getId());
         return "Selamat, kamu telah join menjadi anggota tugas kelompok dengan id "+id;
     }
 
