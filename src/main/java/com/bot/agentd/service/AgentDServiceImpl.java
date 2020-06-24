@@ -6,7 +6,6 @@ import com.bot.agentd.repository.JadwalRepository;
 import com.bot.agentd.repository.TugasIndividuRepository;
 import com.bot.agentd.repository.TugasKelompokRepository;
 import com.bot.agentd.repository.UserAgentDRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -117,14 +116,37 @@ public class AgentDServiceImpl implements AgentDService {
                 case("remind tk"):
                     jawaban = this.remindTugasKelompok(Long.parseLong(pesanSplit[1]), user, controller);
                     break;
+                case("help"):
+                    jawaban = this.help();
+                    break;
                 default:
                     jawaban = tidakDikenal;
             }
             return jawaban;
         }catch (Exception e){
             log.log(Level.INFO, "Error Happens in quote initiating");
-            return "Error Occured while initiating Quotes.";
+            return "Error, Something happened";
         }
+    }
+
+    public String help(){
+        String jawaban = "Halo, selamat datang di Agent-D! Untuk memanfaatkan Agent-D, gunakan command-command berikut :\n\n";
+        jawaban+="tambah/tugas individu/<nama tugas>/<deskripsi tugas>/<deadline tugas> => menambahkan tugas individu\n";
+        jawaban+="tambah/tugas kelompok/<nama tugas>/<deskripsi tugas>/<deadline tugas> => menambahkan tugas kelompok\n";
+        jawaban+="tambah/jadwal/<nama jadwal>/<hari jadwal>/<waktu mulai>/<waktu selesai> => menambahkan jadwal mingguan\n";
+        jawaban+="lihat/tugas individu => melihat daftar tugas individu yang terdaftar oleh kamu\n";
+        jawaban+="lihat/tugas kelompok => melihat daftar tugas kelompok dimana kamu adalah anggota\n";
+        jawaban+="lihat/tugas individu => melihat daftar jadwal mingguan yang terdaftar oleh kamu\n";
+        jawaban+="remove/tugas individu/<id tugas> => menghapus tugas individu sesuai id yang terdaftar\n";
+        jawaban+="remove/tugas kelompok/<id tugas> => menghapus tugas kelompok sesuai id yang terdaftar\n";
+        jawaban+="remove/jadwal/<id jadwal> => menghapus jadwal mingguan sesuai id yang terdaftar\n";
+        jawaban+="cekid => memeriksa id kamu yang terdaftar saat menjadi user Agent-D\n";
+        jawaban+="quote => mendapatkan quotes pilihan untuk menyemangati harimu\n";
+        jawaban+="join tk/<id tugas> => mendaftarkan diri menjadi anggota tugas kelompok dengan id tertentu\n";
+        jawaban+="remind tk/<id tugas> => mengingatkan semua anggota kelompok dalam tugas tersebut agar mengerjakan tugas\n";
+        jawaban+="help => mendapatkan bantuan penggunaan Agent-D\n\n";
+        jawaban+="Semoga bermanfaat!";
+        return jawaban;
     }
 
     public String tambahTugasIndividu (UserAgentD user, String nama, String desc, String deadline){
