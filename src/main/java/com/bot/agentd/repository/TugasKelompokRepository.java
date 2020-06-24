@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface TugasKelompokRepository extends JpaRepository<TugasKelompok, Long> {
-    @Query(value = "SELECT s FROM TugasKelompok s WHERE s.ownerId = :ownerId")
+    @Query(value = "SELECT s FROM TugasKelompok s WHERE s.daftarAnggota like %:ownerId%")
     List<TugasKelompok> fetchTugasKelompok(@Param("ownerId") String ownerId);
 
     @Transactional
