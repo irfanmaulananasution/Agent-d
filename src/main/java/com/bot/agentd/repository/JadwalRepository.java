@@ -15,6 +15,9 @@ public interface JadwalRepository extends JpaRepository<Jadwal, Long> {
     @Query(value = "SELECT s FROM Jadwal s WHERE s.ownerId = :ownerId")
     List<Jadwal> fetchJadwal(@Param("ownerId") String ownerId);
 
+    @Query(value = "SELECT s FROM Jadwal s WHERE s.ownerId = :ownerId AND s.day = :day")
+    List<Jadwal> fetchJadwalBasedOnDay(@Param("ownerId") String ownerId, @Param("day") String day);
+
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM Jadwal s WHERE s.id = :id")

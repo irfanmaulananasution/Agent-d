@@ -13,47 +13,36 @@ before_script:
 
 stages:
   - build
+  - test
   - deploy
-#  - test
 
 build:
   stage: build
   script:
     - gradle build
 
-#checkstyle:
-#  stage: test
-#  script: gradle checkstyleMain checkstyleTest
-#  allow_failure: true
-#  cache:
-#    key: "$CI_COMMIT_REF_NAME"
-#    paths:
-#      - .gradle
-#  rules:
-#    - if: '$CI_PROJECT_NAMESPACE != "ri-bot/"'
+test:
+  stage: test
+  script:
+    - gradle check
+    - gradle jacocoTestReport
+    - cat build/jacocoHtml/index.html
 
-#test:
-#  stage: test
-#  script:
-#    - gradle check
-#    - gradle jacocoTestReport
-#    - cat build/jacocoHtml/index.html
-#
-#  cache:
-#    key: "$CI_COMMIT_REF_NAME"
-#    paths:
-#      - .gradle
-#  rules:
-#    - if: '$CI_PROJECT_NAMESPACE != "agent-d/"'
-#  artifacts:
-#    paths:
-#      - coverage/
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - .gradle
+  rules:
+    - if: '$CI_PROJECT_NAMESPACE != "agent-d/"'
+  artifacts:
+    paths:
+      - coverage/
 
 Deployment:
   image: ruby:2.4
   stage: deploy
-#  only:
-#    - master
+  only:
+    - master
   before_script:
     - gem install dpl
     - wget -qO- https://cli-assets.heroku.com/install-ubuntu.sh | sh
