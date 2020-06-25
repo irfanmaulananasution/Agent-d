@@ -93,12 +93,9 @@ public class TugasKelompok {
     }
     public void removeAnggota(UserAgentD anggota) {
         List<String> listAnggota = Arrays.asList(this.daftarAnggota.split(" "));
-        if (listAnggota.contains(anggota.getId())) {
-            listAnggota.remove(anggota.getId());
-        }
         this.daftarAnggota="";
         for(int iteratorAnggota = 0; iteratorAnggota < listAnggota.size(); iteratorAnggota++){
-            daftarAnggota+=listAnggota.get(iteratorAnggota)+" ";
+            if(!listAnggota.get(iteratorAnggota).equals(anggota.getId())) daftarAnggota+=listAnggota.get(iteratorAnggota)+" ";
         }
     }
 

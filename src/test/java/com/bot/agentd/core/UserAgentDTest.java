@@ -14,13 +14,30 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserAgentDTest {
-//    UserAgentD user;
-//
-////    buat test method baru yang dipindahin
-//    @BeforeEach
-//    public void setUp(){
-//        user = new UserAgentD("123abc", "aku");
-//    }
+    UserAgentD user;
+
+//    buat test method baru yang dipindahin
+    @BeforeEach
+    public void setUp(){
+        user = new UserAgentD("123abc", "satu");
+    }
+
+    @Test
+    public void testMethodGetId(){
+        assertEquals("123abc", user.getId());
+    }
+
+    @Test
+    public void testMethodGetUname(){
+        assertEquals("satu", user.getUserName());
+    }
+
+    @Test
+    public void testMethodChangeUsername(){
+        user.changeUserName("dua");
+        assertEquals("dua", user.getUserName());
+    }
+
 //
 //    @Test
 //    public void testMethodAddTugasIndividu(){
@@ -34,16 +51,6 @@ public class UserAgentDTest {
 //        }catch (ParseException e){
 //            e.printStackTrace();
 //        }
-//    }
-//
-//    @Test
-//    public void testMethodGetId(){
-//        assertEquals("123abc", user.getId());
-//    }
-//
-//    @Test
-//    public void testMethodGetUname(){
-//        assertEquals("aku", user.getuName());
 //    }
 //
 //    @Test
