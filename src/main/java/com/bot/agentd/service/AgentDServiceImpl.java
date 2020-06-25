@@ -6,6 +6,7 @@ import com.bot.agentd.repository.JadwalRepository;
 import com.bot.agentd.repository.TugasIndividuRepository;
 import com.bot.agentd.repository.TugasKelompokRepository;
 import com.bot.agentd.repository.UserAgentDRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,7 +83,8 @@ public class AgentDServiceImpl implements AgentDService {
                             jawaban = this.lihatTugasKelompok(user);
                             break;
                         case ("jadwal"):
-                            jawaban = this.lihatJadwal(user);
+                            if(pesanSplit.length==2) jawaban = this.lihatJadwal(user);
+                            else jawaban = this.lihatJadwalSesuaihari(user, pesanSplit[2]);
                             break;
                         default:
                             jawaban = tidakDikenal;
@@ -288,6 +290,19 @@ public class AgentDServiceImpl implements AgentDService {
     public String lihatJadwal(UserAgentD user){
         String jawaban = "";
         List<Jadwal> jadwals = jadwalRepo.fetchJadwal(user.getId());
+        for (Jadwal jadwalSekarang : jadwals) {
+            String name = jadwalSekarang.getName();
+            String day = jadwalSekarang.getDay();
+            String timeStart = jadwalSekarang.getTimeStart();
+            String  timeEnd = jadwalSekarang.getTimeEnd();
+            jawaban += jadwalSekarang.getId()+" "+name + " " + day + " " + timeStart + " - " + timeEnd + "\n\n";
+        }
+        return jawaban;
+    }
+
+    public String lihatJadwalSesuaihari(UserAgentD user, String hari){
+        List<Jadwal> jadwals = jadwalRepo.fetchJadwalBasedOnDay(user.getId(),hari);
+        String jawaban = "";
         for (Jadwal jadwalSekarang : jadwals) {
             String name = jadwalSekarang.getName();
             String day = jadwalSekarang.getDay();
