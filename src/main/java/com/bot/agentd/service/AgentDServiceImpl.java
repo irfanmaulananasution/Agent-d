@@ -42,8 +42,7 @@ public class AgentDServiceImpl implements AgentDService {
     }
 
     @Override
-    public void registerUser(String id, String uname) {
-        UserAgentD newUser = new UserAgentD(id, uname);
+    public void registerUser(UserAgentD newUser) {
         userRepo.save(newUser);
     }
 
@@ -55,17 +54,20 @@ public class AgentDServiceImpl implements AgentDService {
                 case ("tambah"):
                     switch (pesanSplit[1].toLowerCase()) {
                         case ("tugas individu"):
-                            jawaban = this.tambahTugasIndividu(user, pesanSplit[2], pesanSplit[3], pesanSplit[4]);
+                            TugasIndividu task = new TugasIndividu(pesanSplit[2], pesanSplit[3], pesanSplit[4], user.getId());
+                            jawaban = this.tambahTugasIndividu(user, task);
                             break;
                         case ("tugas kelompok"):
-                            jawaban = this.tambahTugasKelompok(user, pesanSplit[2], pesanSplit[3], pesanSplit[4]);
+                            TugasKelompok task2 = new TugasKelompok(pesanSplit[2],pesanSplit[3],pesanSplit[4], user);
+                            jawaban = this.tambahTugasKelompok(user,task2);
                             break;
                         case ("jadwal"):
                             String name = pesanSplit[2];
                             String day = pesanSplit[3];
                             String startTime = pesanSplit[4];
                             String endTime = pesanSplit[5];
-                            jawaban = this.tambahJadwal(user, name, day, startTime, endTime);
+                            Jadwal schedule = new Jadwal(name, day, startTime, endTime, user.getId());
+                            jawaban = this.tambahJadwal(user, schedule);
                             break;
                         default:
                             jawaban = tidakDikenal;
@@ -196,8 +198,7 @@ public class AgentDServiceImpl implements AgentDService {
         return jawaban;
     }
 
-    public String tambahTugasIndividu (UserAgentD user, String nama, String desc, String deadline){
-        TugasIndividu task = new TugasIndividu(nama, desc, deadline, user.getId());
+    public String tambahTugasIndividu (UserAgentD user, TugasIndividu task){
         tugasIndividuRepo.save(task);
         return task.getName()+" telah ditambahkan ke dalam daftar tugas individu kamu, "+user.getUserName();
     }
@@ -219,11 +220,11 @@ public class AgentDServiceImpl implements AgentDService {
         return "Tugas Individu dengan ID : "+id+" telah dihapus";
     }
 
-    public String tambahTugasKelompok(UserAgentD user, String nama, String desc, String deadline){
-        TugasKelompok task = new TugasKelompok(nama, desc, deadline, user);
+    public String tambahTugasKelompok(UserAgentD user, TugasKelompok task){
         tugasKelompokRepo.save(task);
         return task.getName()+" telah ditambahkan ke dalam daftar tugas kelompok kamu, "+user.getUserName();
     }
+
     public String lihatTugasKelompok(UserAgentD user){
         List<TugasKelompok> tasks = tugasKelompokRepo.fetchTugasKelompok(user.getId());
         String jawaban = "";
@@ -279,10 +280,9 @@ public class AgentDServiceImpl implements AgentDService {
         return "Tugas Kelompok dengan ID : "+id+" telah dihapus";
     }
 
-    public String tambahJadwal(UserAgentD user,String nama, String day, String startTime, String endTime){
-        Jadwal schedule = new Jadwal(nama, day, startTime, endTime, user.getId());
+    public String tambahJadwal(UserAgentD user,Jadwal schedule){
         jadwalRepo.save(schedule);
-        return "Jadwal "+nama+" telah ditambahkan dalam jadwal anda, "+user.getUserName();
+        return "Jadwal "+schedule.getName()+" telah ditambahkan dalam jadwal anda, "+user.getUserName();
     }
 
     public String lihatJadwal(UserAgentD user){

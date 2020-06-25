@@ -5,6 +5,6 @@ import com.bot.agentd.core.UserAgentD;
 
 public interface AgentDService {
     boolean isUserRegistered(String id);
-    void registerUser(String id, String uname);
+    void registerUser(UserAgentD newUser);
     String periksaMessage(String id, String[] pesanSplit, AgentDController controller);
 }
