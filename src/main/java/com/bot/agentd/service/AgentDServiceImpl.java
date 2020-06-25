@@ -154,9 +154,9 @@ public class AgentDServiceImpl implements AgentDService {
 
     public String help(){
         String jawaban = "Halo, selamat datang di Agent-D! Untuk memanfaatkan Agent-D, gunakan command-command berikut :\n\n";
-        jawaban += "untuk mengetahui command tugas individu, kirim help/tugas individu\n";
-        jawaban += "untuk mengetahui command tugas kelompok, kirim help/tugas kelompok\n";
-        jawaban += "untuk mengetahui command jadwal mingguan, kirim help/jadwal\n";
+        jawaban += "untuk mengetahui command tugas individu, kirim help/tugas individu\n\n";
+        jawaban += "untuk mengetahui command tugas kelompok, kirim help/tugas kelompok\n\n";
+        jawaban += "untuk mengetahui command jadwal mingguan, kirim help/jadwal\n\n";
         jawaban += "untuk mengetahui command lain, kirim help/others\n";
         jawaban+="\nSemoga bermanfaat!";
         return jawaban;
@@ -164,8 +164,8 @@ public class AgentDServiceImpl implements AgentDService {
 
     public String helpTI(){
         String jawaban = "Berikut adalah command yang berhubungan dengan tugas individu: \n\n";
-        jawaban+="tambah/tugas individu/<nama tugas>/<deskripsi tugas>/<deadline tugas> => menambahkan tugas individu\n";
-        jawaban+="lihat/tugas individu => melihat daftar tugas individu yang terdaftar oleh kamu\n";
+        jawaban+="tambah/tugas individu/<nama tugas>/<deskripsi tugas>/<deadline tugas> => menambahkan tugas individu\n\n";
+        jawaban+="lihat/tugas individu => melihat daftar tugas individu yang terdaftar oleh kamu\n\n";
         jawaban+="remove/tugas individu/<id tugas> => menghapus tugas individu sesuai id yang terdaftar\n";
         jawaban+="\nSemoga bermanfaat!";
         return jawaban;
@@ -173,10 +173,10 @@ public class AgentDServiceImpl implements AgentDService {
 
     public String helpTK(){
         String jawaban = "Berikut adalah command yang berhubungan dengan tugas kelompok : \n\n";
-        jawaban+="tambah/tugas kelompok/<nama tugas>/<deskripsi tugas>/<deadline tugas> => menambahkan tugas kelompok\n";
-        jawaban+="lihat/tugas kelompok => melihat daftar tugas kelompok dimana kamu adalah anggota\n";
-        jawaban+="remove/tugas kelompok/<id tugas> => menghapus tugas kelompok sesuai id yang terdaftar\n";
-        jawaban+="join tk/<id tugas> => mendaftarkan diri menjadi anggota tugas kelompok dengan id tertentu\n";
+        jawaban+="tambah/tugas kelompok/<nama tugas>/<deskripsi tugas>/<deadline tugas> => menambahkan tugas kelompok\n\n";
+        jawaban+="lihat/tugas kelompok => melihat daftar tugas kelompok dimana kamu adalah anggota\n\n";
+        jawaban+="remove/tugas kelompok/<id tugas> => menghapus tugas kelompok sesuai id yang terdaftar\n\n";
+        jawaban+="join tk/<id tugas> => mendaftarkan diri menjadi anggota tugas kelompok dengan id tertentu\n\n";
         jawaban+="remind tk/<id tugas> => mengingatkan semua anggota kelompok dalam tugas tersebut agar mengerjakan tugas\n";
         jawaban+="\nSemoga bermanfaat!";
         return jawaban;
@@ -184,17 +184,18 @@ public class AgentDServiceImpl implements AgentDService {
 
     public String helpJadwal(){
         String jawaban = "Berikut adalah command yang berhubungan dengan jadwal mingguan : \n\n";
-        jawaban+="tambah/jadwal/<nama jadwal>/<hari jadwal>/<waktu mulai>/<waktu selesai> => menambahkan jadwal mingguan\n";
-        jawaban+="lihat/jadwal => melihat daftar jadwal mingguan yang terdaftar oleh kamu\n";
-        jawaban+="remove/jadwal/<id jadwal> => menghapus jadwal mingguan sesuai id yang terdaftar\n";
+        jawaban+="tambah/jadwal/<nama jadwal>/<hari jadwal>/<waktu mulai>/<waktu selesai> => menambahkan jadwal mingguan\n\n";
+        jawaban+="lihat/jadwal => melihat daftar jadwal mingguan yang terdaftar oleh kamu\n\n";
+        jawaban+="remove/jadwal/<id jadwal> => menghapus jadwal mingguan sesuai id yang terdaftar\n\n";
+        jawaban+="lihat/jadwal/<hari> => melihat jadwal sesuai hari yang diinput\n";
         jawaban+="\nSemoga bermanfaat!";
         return jawaban;
     }
 
     public String helpOther(){
         String jawaban = "Berikut adalah command yang dapat dijalankan di Agent-D : \n\n";
-        jawaban+="cekid => memeriksa id kamu yang terdaftar saat menjadi user Agent-D\n";
-        jawaban+="quote => mendapatkan quotes pilihan untuk menyemangati harimu\n";
+        jawaban+="cekid => memeriksa id kamu yang terdaftar saat menjadi user Agent-D\n/n";
+        jawaban+="quote => mendapatkan quotes pilihan untuk menyemangati harimu\n\n";
         jawaban+="help => mendapatkan bantuan penggunaan Agent-D\n";
         jawaban+="\nSemoga bermanfaat!";
         return jawaban;
